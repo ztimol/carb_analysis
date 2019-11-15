@@ -43,12 +43,27 @@ def _get_torsion_params(line, torsion_params):
     torsion_input_values = line.split()
     torsion_name = torsion_input_values[1].strip()
     torsion_type = torsion_input_values[2].strip()
-    torsion_selection = line[line.find(torsion_type) + len(torsion_type) :].strip()[
-        1:-1
-    ]
-    try:
-        torsion_params[torsion_name][torsion_type] = torsion_selection
-    except KeyError:
-        torsion_params[torsion_name] = {}
-        torsion_params[torsion_name][torsion_type] = torsion_selection
+
+    if torsion_type == "scatter":
+        try:
+            torsion_params["plots"][torsion_name] = {
+                "x_key": line[3].strip(),
+                "y_key": line[4].strip(),
+            }
+        except KeyError:
+            torsion_params["plots"] = {}
+            torsion_params["plots"][torsion_name] = {
+                "x_key": torsion_input_values[3].strip(),
+                "y_key": torsion_input_values[4].strip(),
+            }
+    else:
+        torsion_selection = line[line.find(torsion_type) + len(torsion_type) :].strip()[
+            1:-1
+        ]
+        try:
+            torsion_params[torsion_name][torsion_type] = torsion_selection
+        except KeyError:
+            torsion_params[torsion_name] = {}
+            torsion_params[torsion_name][torsion_type] = torsion_selection
+
     return torsion_params

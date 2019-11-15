@@ -43,3 +43,14 @@ def calc_second_degree_polynomial(x, a, b, c):
 
 def calc_third_order_polynomial(x, a, b, c, d):
     return a * x ** 3 + b * x ** 2 + c * x + d
+
+
+# Define a class that forces representation of float to look a certain way
+# This remove trailing zero so '1.0' becomes '1'
+class nf(float):
+    def __repr__(self):
+        str = "%.1f" % (self.__float__(),)
+        if str[-1] == "0":
+            return "%.0f" % self.__float__()
+        else:
+            return "%.1f" % self.__float__()
