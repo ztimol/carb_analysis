@@ -26,6 +26,8 @@ def _read_config_params_from_file(config_file):
                     config_params["torsions"] = _get_torsion_params(
                         cleaned_line, config_params["torsions"]
                     )
+                elif field_name == "frames_per_ns":
+                    config_params[field_name] = eval(line.split()[1])
                 else:
                     config_params[field_name] = cleaned_line.split()[1]
     return config_params
@@ -61,9 +63,10 @@ def _get_torsion_params(line, torsion_params):
             1:-1
         ]
         try:
+            torsion_params["vars"] = {}
             torsion_params[torsion_name][torsion_type] = torsion_selection
         except KeyError:
-            torsion_params[torsion_name] = {}
-            torsion_params[torsion_name][torsion_type] = torsion_selection
+            torsion_params["vars"][torsion_name] = {}
+            torsion_params["vars"][torsion_name][torsion_type] = torsion_selection
 
     return torsion_params

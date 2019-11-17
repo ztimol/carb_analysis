@@ -62,3 +62,7 @@ def confirm_critical_file_exists(file_path):
         return True
     else:
         raise Exception("file missing: " + file_path)
+
+
+def convert_frames_to_ns(num_frames, frames_per_ns):
+    return num_frames / frames_per_ns

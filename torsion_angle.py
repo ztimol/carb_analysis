@@ -19,11 +19,8 @@ class TorsionAngle:
 
     def torsion_trajectory_analysis(self, input_torsion_params, start_frame=0):
         torsion_stats = {}
-        for torsion_name, torsion_values in input_torsion_params.items():
-            if torsion_name == "plots":
-                continue
+        for torsion_name, torsion_values in input_torsion_params["vars"].items():
             torsion_stats[torsion_name] = {}
-
             for torsion_type, torsion_selection in torsion_values.items():
                 torsion_stats[torsion_name][torsion_type] = {}
 
@@ -54,6 +51,11 @@ class TorsionAngle:
             )
 
             self._write_torsion_stats(torsion_stats, torsion_stats_file_path)
+            import pdb
+
+            pdb.set_trace()
+            # self._torsion_angle_against_time_scatter(torsions, time_series)
+            # self._torsion_angles_scatter(x_axis_torsions, y_axis_torsions)
 
     def atom_selection_torsions_for_trajectory(self, mda_dihedral):
         return mda_dihedral.run().angles
@@ -106,5 +108,54 @@ class TorsionAngle:
                         outf.write("\n")
                 outf.write("\n\n")
 
-    def torsion_angle_against_time_scatter():
+    def _torsion_angles_scatter(x_axis_torsions, y_axis_torsions):
         pass
+
+    def _torsion_angle_against_time_scatter(torsions, time_series):
+
+        try:
+            torsions_to_plot = env["input_params"]["torsions"]["plots"]
+        except KeyError:
+            return
+
+        for torsion_name, torsion_values in torsions_to_plot.items():
+
+            x_key = torsion_values.get("x_key", None)
+            y_key = torsion_values.get("y_key", None)
+
+            plot_file_path = os.path.join(
+                self.torsion_angles_dir, torsion_name, x_key + "_" + y_key
+            )
+
+            x_values = (
+                torsion_params.get(torsion_name, {})
+                .get(x_key, None)
+                .get("trajectory_torsion_angles", [])
+            )
+            y_values = (
+                torsion_params.get(torsion_name, {})
+                .get(y_key, None)
+                .get("trajectory_torsion_angles", [])
+            )
+
+            phi_list = [i[0] for i in x_values]
+            psi_list = [i[0] for i in y_values]
+            scatter_without_pmf_contour(
+                phi_list, psi_list, plot_file_path, x_key, y_key
+            )
+
+            scatter.make_scatter(
+                x_key,
+                phi_list,
+                [t for t in range(len(phi_list))],
+                x_key,
+                os.path.join(output_dir, "torsion_angles", torsion_name),
+            )
+
+            scatter.make_scatter(
+                y_key,
+                psi_list,
+                [t for t in range(len(psi_list))],
+                x_key,
+                os.path.join(output_dir, "torsion_angles", torsion_name),
+            )

@@ -39,61 +39,9 @@ class Base:
 
         torsion = TorsionAngle(self.mda_universe, torsion_angles_dir)
         torsion.torsion_trajectory_analysis(input_torsion_params, start_frame)
+        import pdb
 
-        # self.create_torsion_plots(env, torsion_params)
-
-    def create_torsion_plots(self, env, torsion_params):
-
-        output_dir = os.path.join(
-            os.getcwd(), env["input_params"].get("output_dir", None)
-        )
-
-        try:
-            torsions_to_plot = env["input_params"]["torsions"]["plots"]
-        except KeyError:
-            return
-
-        for torsion_name, torsion_values in torsions_to_plot.items():
-
-            x_key = torsion_values.get("x_key", None)
-            y_key = torsion_values.get("y_key", None)
-
-            plot_file_path = os.path.join(
-                output_dir, "torsion_angles", torsion_name, x_key + "_" + y_key
-            )
-
-            x_values = (
-                torsion_params.get(torsion_name, {})
-                .get(x_key, None)
-                .get("trajectory_torsion_angles", [])
-            )
-            y_values = (
-                torsion_params.get(torsion_name, {})
-                .get(y_key, None)
-                .get("trajectory_torsion_angles", [])
-            )
-
-            phi_list = [i[0] for i in x_values]
-            psi_list = [i[0] for i in y_values]
-            scatter_without_pmf_contour(
-                phi_list, psi_list, plot_file_path, x_key, y_key
-            )
-
-            scatter.make_scatter(
-                x_key,
-                phi_list,
-                [t for t in range(len(phi_list))],
-                x_key,
-                os.path.join(output_dir, "torsion_angles", torsion_name),
-            )
-
-            scatter.make_scatter(
-                y_key,
-                psi_list,
-                [t for t in range(len(psi_list))],
-                x_key,
-                os.path.join(output_dir, "torsion_angles", torsion_name),
-            )
+        pdb.set_trace()
 
 
 def main():
