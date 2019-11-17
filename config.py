@@ -16,16 +16,21 @@ def get_analysis_config(config_file):
 def _read_config_params_from_file(config_file):
 
     config_params = {}
-    config_params["torsions"] = {}
     with (open(config_file, "r")) as infile:
         for line in infile:
             if not is_whole_string_comment(line) and not is_empty_string(line):
                 cleaned_line = clean_string(line)
                 field_name = cleaned_line.split()[0]
                 if field_name == "torsion":
-                    config_params["torsions"] = _get_torsion_params(
-                        cleaned_line, config_params["torsions"]
-                    )
+                    try:
+                        config_params["torsions"] = _get_torsion_params(
+                            cleaned_line, config_params["torsions"]
+                        )
+                    except KeyError::
+                        config_params["torsions"] = {}
+                        config_params["torsions"] = _get_torsion_params(
+                            cleaned_line, config_params["torsions"]
+                        )
                 elif field_name == "frames_per_ns":
                     config_params[field_name] = eval(line.split()[1])
                 else:

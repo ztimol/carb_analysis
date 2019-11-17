@@ -7,6 +7,7 @@ class TorsionAngle:
     def __init__(self, mda_universe, torsion_angles_dir):
         self.mda_universe = mda_universe
         self.torsion_angles_dir = torsion_angles_dir
+
         # self.start_frame = start_frame
 
     def _set_torsion_angles_dir(self, torsion_name):

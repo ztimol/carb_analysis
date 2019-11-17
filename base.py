@@ -25,20 +25,23 @@ class Base:
 
         self.mda_universe = mda.Universe(psf_file_path, dcd_file_path)
 
-    def do_torsion_analysis(self, env):
+    def torsion_analysis(self, env):
 
         start_frame = int(env["input_params"].get("start_frame", 0))
-
         output_dir = env["input_params"].get("output_dir", "output")
-        torsion_angles_dir = os.path.join(output_dir, "torsion_angles")
 
-        if not os.path.exists(torsion_angles_dir):
-            os.mkdir(torsion_angles_dir)
+        try:
+            input_torsion_params = env["input_params"]["torsions"]
 
-        input_torsion_params = env["input_params"]["torsions"]
+            torsion_angles_dir = os.path.join(output_dir, "torsion_angles")
+            if not os.path.exists(torsion_angles_dir):
+                os.mkdir(torsion_angles_dir)
+        except KeyError:
+            return  # no torsions specified in config file. Don't run torsion analysis.
 
-        torsion = TorsionAngle(self.mda_universe, torsion_angles_dir)
+        torsion = TorsionAngle(torsion_angles_dir)
         torsion.torsion_trajectory_analysis(input_torsion_params, start_frame)
+
         import pdb
 
         pdb.set_trace()
@@ -62,7 +65,7 @@ def main():
     # except later in the script so that we catch the error earlier
 
     base_analysis = Base(dcd_file, psf_file)
-    base_analysis.do_torsion_analysis(env)
+    base_analysis.torsion_analysis(env)
 
 
 if __name__ == "__main__":
