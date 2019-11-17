@@ -54,3 +54,11 @@ class nf(float):
             return "%.0f" % self.__float__()
         else:
             return "%.1f" % self.__float__()
+
+
+def confirm_critical_file_exists(file_path):
+
+    if os.path.isfile(file_path):
+        return True
+    else:
+        raise Exception("file missing: " + file_path)
