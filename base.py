@@ -30,7 +30,7 @@ def main():
 
     structure_analysis = Analysis(env["input_params"])
 
-    structure_analysis.torsion_analysis(env)
+    structure_analysis.torsion_analysis()
 
 
 if __name__ == "__main__":

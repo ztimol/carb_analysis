@@ -10,6 +10,8 @@ class TorsionAnglePlot(Plot):
             "y_label": "$\\" + torsion_type + "$",
             "x_label": "time (ns)",
             "x_major_tick": 5,
+            "y_end": 180,
+            "y_start": -180,
             "torsion_type": torsion_type,
             "x_end": self.get_trajectory_time_in_ns(),
         }
@@ -18,7 +20,10 @@ class TorsionAnglePlot(Plot):
             torsion_name_dir, torsion_type + "_time_series.png"
         )
         self.two_dimensional_scatter(
-            time_series, torsion_angles, plot_file_path, scatter_params=scatter_params
+            time_series,
+            torsion_angles,  # [i[0] for i in torsion_angles],
+            plot_file_path,
+            scatter_params=scatter_params,
         )
 
     def torsion_angles_scatter(

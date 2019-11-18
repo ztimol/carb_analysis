@@ -55,9 +55,10 @@ class Config:
         if torsion_type == "scatter":
             try:
                 torsion_params["plots"][torsion_name] = {
-                    "x_key": line[3].strip(),
-                    "y_key": line[4].strip(),
+                    "x_key": torsion_input_values[3].strip(),
+                    "y_key": torsion_input_values[4].strip(),
                 }
+
             except KeyError:
                 torsion_params["plots"] = {}
                 torsion_params["plots"][torsion_name] = {

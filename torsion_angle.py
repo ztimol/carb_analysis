@@ -19,10 +19,10 @@ class TorsionAngle(TorsionAnglePlot, Trajectory):
 
         return torsion_name_dir
 
-    def torsion_trajectory_analysis(self, input_torsion_params, start_frame=0):
+    def torsion_trajectory_analysis(self):
         torsion_stats = {}
 
-        for torsion_name, torsion_values in input_torsion_params["vars"].items():
+        for torsion_name, torsion_values in self.env["torsions"]["vars"].items():
             torsion_stats[torsion_name] = {}
 
             for torsion_type, torsion_selection in torsion_values.items():
@@ -47,7 +47,7 @@ class TorsionAngle(TorsionAnglePlot, Trajectory):
                 )
 
                 torsion_stats[torsion_name][torsion_type] = self.stats_analysis(
-                    torsion_angles, start_frame
+                    torsion_angles
                 )
 
                 torsion_stats[torsion_name][torsion_type][
@@ -92,9 +92,9 @@ class TorsionAngle(TorsionAnglePlot, Trajectory):
                 outf.write(str(torsion_angle[0]))
                 outf.write("\n")
 
-    def stats_analysis(self, torsion_angles, start_frame):
+    def stats_analysis(self, torsion_angles):
 
-        torsion_angles_from_start_frame = torsion_angles[start_frame:]
+        torsion_angles_from_start_frame = torsion_angles[self.get_start_frame() :]
 
         mean_average = np.mean(torsion_angles_from_start_frame)
         median_average = np.median(torsion_angles_from_start_frame)
