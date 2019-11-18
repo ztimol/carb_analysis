@@ -1,9 +1,10 @@
 import os
 import numpy as np
 from MDAnalysis.analysis.dihedrals import Dihedral
+from trajectory import Trajectory
 
 
-class TorsionAngle:
+class TorsionAngle(Trajectory):
     def __init__(self, mda_universe, torsion_angles_dir):
         self.mda_universe = mda_universe
         self.torsion_angles_dir = torsion_angles_dir
@@ -20,6 +21,9 @@ class TorsionAngle:
 
     def torsion_trajectory_analysis(self, input_torsion_params, start_frame=0):
         torsion_stats = {}
+        import pdb
+
+        pdb.set_trace()
         for torsion_name, torsion_values in input_torsion_params["vars"].items():
             torsion_stats[torsion_name] = {}
             for torsion_type, torsion_selection in torsion_values.items():
@@ -52,9 +56,7 @@ class TorsionAngle:
             )
 
             self._write_torsion_stats(torsion_stats, torsion_stats_file_path)
-            import pdb
 
-            pdb.set_trace()
             # self._torsion_angle_against_time_scatter(torsions, time_series)
             # self._torsion_angles_scatter(x_axis_torsions, y_axis_torsions)
 

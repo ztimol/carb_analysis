@@ -3,6 +3,10 @@ import re
 from helper import is_whole_string_comment, is_empty_string, clean_string
 
 
+class Config:
+    pass
+
+
 def get_analysis_config(config_file):
 
     is_config_file_real = _check_if_config_file_exists(config_file)
@@ -26,7 +30,7 @@ def _read_config_params_from_file(config_file):
                         config_params["torsions"] = _get_torsion_params(
                             cleaned_line, config_params["torsions"]
                         )
-                    except KeyError::
+                    except KeyError:
                         config_params["torsions"] = {}
                         config_params["torsions"] = _get_torsion_params(
                             cleaned_line, config_params["torsions"]
