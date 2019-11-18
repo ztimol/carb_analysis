@@ -18,25 +18,30 @@ class Plot:
     def two_dimensional_scatter(self, x_values, y_values, plot_file_path, **kwargs):
 
         scatter_params = kwargs.get("scatter_params", {})
-        y_label = scatter_params.get("y_label", "y")
 
-        xend = scatter_params.get("x_end")
-        xstart = scatter_params.get("x_start", 0)
+        x_label = scatter_params.get("x_label")
+        x_start = scatter_params.get("x_start", 0)
+        x_end = scatter_params.get("x_end")
+
         x_major_tick = scatter_params.get("x_major_tick", 10)
 
-        fig = plt.figure(figsize=(24, 12.76))
+        y_label = scatter_params.get("y_label", "y")
+        y_start = scatter_params.get("y_start", 0)
+        y_end = scatter_params.get("y_end")
+
+        fig = plt.figure()
         ax = fig.gca()
-        font = {"size": 40}
-        plt.rc("font", **font)
+        # font = {"size": 40}
+        # plt.rc("font", **font)
         plt.scatter(x_values, y_values, s=5, color="g")
 
-        ax.xaxis.set_ticks(np.arange(xstart, xend + x_major_tick, x_major_tick))
-        plt.xlabel("time (ns)", fontsize=40)
-        plt.ylabel(y_label, fontsize=40)
-        plt.xlim([xstart, xend])
-        plt.ylim([-200, 200])
-        ax.tick_params(axis="x", labelsize=35)
-        ax.tick_params(axis="y", labelsize=35)
+        ax.xaxis.set_ticks(np.arange(x_start, x_end + x_major_tick, x_major_tick))
+        plt.xlabel(x_label)
+        plt.ylabel(y_label)
+        plt.xlim([x_start, x_end])
+        plt.ylim([y_start, y_end])
+        ax.tick_params(axis="x")
+        ax.tick_params(axis="y")
         plt.grid()
 
         # fig.savefig(outfileName, dpi=400, format="png")

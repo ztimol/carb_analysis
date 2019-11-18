@@ -50,11 +50,15 @@ class TorsionAngle(TorsionAnglePlot, Trajectory):
                     torsion_angles, start_frame
                 )
 
+                torsion_stats[torsion_name][torsion_type][
+                    "torsion_angles"
+                ] = torsion_angles
+
                 time_series = np.arange(
                     0, self.get_trajectory_time_in_ns(), self.ns_per_frame()
                 )
 
-                self.two_dimensional_scatter(
+                self.time_series_scatter(
                     time_series, torsion_angles, torsion_name_dir, torsion_type,
                 )
 
@@ -64,8 +68,16 @@ class TorsionAngle(TorsionAnglePlot, Trajectory):
 
             self._write_torsion_stats(torsion_stats, torsion_stats_file_path)
 
-            self.ns_per_frame()
-            # self._torsion_angles_scatter(x_axis_torsions, y_axis_torsions)
+            for torsion_plot_name, plot_values in self.env["torsions"]["plots"].items():
+                if torsion_plot_name == torsion_name:
+                    x_key = plot_values["x_key"]
+                    y_key = plot_values["y_key"]
+
+                    x_series = torsion_stats[torsion_plot_name][x_key]["torsion_angles"]
+                    y_series = torsion_stats[torsion_plot_name][y_key]["torsion_angles"]
+                    self.torsion_angles_scatter(
+                        x_series, y_series, x_key, y_key, torsion_name_dir
+                    )
 
     def atom_selection_torsions_for_trajectory(self, mda_dihedral):
         return mda_dihedral.run().angles
@@ -101,7 +113,7 @@ class TorsionAngle(TorsionAnglePlot, Trajectory):
         return torsion_stats
 
     def _write_torsion_stats(self, torsion_stats, output_file_name):
-        print(torsion_stats)
+
         with open(output_file_name, "w") as outf:
             outf.write("TORSION STATS\n")
             outf.write("---------------\n")
@@ -117,12 +129,3 @@ class TorsionAngle(TorsionAnglePlot, Trajectory):
                         outf.write(str(stat_value))
                         outf.write("\n")
                 outf.write("\n\n")
-
-    def _torsion_angles_scatter(x_axis_torsions, y_axis_torsions):
-        x_key = torsion_values.get("x_key", None)
-        y_key = torsion_values.get("y_key", None)
-        phi_list = [i[0] for i in x_values]
-        psi_list = [i[0] for i in y_values]
-        scatter.scatter_without_pmf_contour(
-            phi_list, psi_list, plot_file_path, x_key, y_key
-        )
