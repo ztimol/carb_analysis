@@ -2,10 +2,9 @@ import sys, os
 import argparse
 import MDAnalysis as mda
 
-
 from pmf_multi import scatter_without_pmf_contour
 
-from config import get_analysis_config
+from config import Config
 from analysis import Analysis
 import scatter
 
@@ -21,17 +20,15 @@ def main():
     env = {}
     env["output_params"] = {}
 
-    env["input_params"] = get_analysis_config(args.f)
-
-    dcd_file = env["input_params"].get("dcd_file", None)
-    psf_file = env["input_params"].get("psf_file", None)
+    analysis_config = Config()
+    env["input_params"] = analysis_config.get_analysis_config(args.f)
 
     output_dir = env["input_params"].get("output_dir", "output")
 
     if not os.path.exists(output_dir):
         os.mkdir(output_dir)
 
-    structure_analysis = Analysis(dcd_file, psf_file)
+    structure_analysis = Analysis(env["input_params"])
 
     structure_analysis.torsion_analysis(env)
 

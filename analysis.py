@@ -5,12 +5,14 @@ from torsion_angle import TorsionAngle
 
 
 class Analysis(Trajectory):
-    def __init__(self, dcd_file_path, psf_file_path):
-        self.mda_universe = mda.Universe(psf_file_path, dcd_file_path)
-        super().__init__(dcd_file_path, psf_file_path)
+    def __init__(self, env):
+        self.env = env
+        self.mda_universe = mda.Universe(
+            self.get_psf_file_path(), self.get_dcd_file_path()
+        )
+        super().__init__(env)
 
     def torsion_analysis(self, env):
-
         start_frame = int(env["input_params"].get("start_frame", 0))
         output_dir = env["input_params"].get("output_dir", "output")
 
@@ -23,5 +25,5 @@ class Analysis(Trajectory):
         except KeyError:
             return  # no torsions specified in config file. Don't run torsion analysis.
 
-        torsion = TorsionAngle(self.mda_universe, torsion_angles_dir)
+        torsion = TorsionAngle(self.env, self.mda_universe, torsion_angles_dir)
         torsion.torsion_trajectory_analysis(input_torsion_params, start_frame)
