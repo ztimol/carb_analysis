@@ -69,10 +69,9 @@ class Config:
                 line.find(torsion_type) + len(torsion_type) :
             ].strip()[1:-1]
             try:
-                torsion_params["vars"] = {}
-                torsion_params[torsion_name][torsion_type] = torsion_selection
+                torsion_params["vars"][torsion_name][torsion_type] = torsion_selection
             except KeyError:
-                torsion_params["vars"][torsion_name] = {}
+                torsion_params["vars"] = {torsion_name: {}}
                 torsion_params["vars"][torsion_name][torsion_type] = torsion_selection
 
         return torsion_params

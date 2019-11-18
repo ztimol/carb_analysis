@@ -2,9 +2,10 @@ import os
 import numpy as np
 from MDAnalysis.analysis.dihedrals import Dihedral
 from trajectory import Trajectory
+from torsion_angle_plot import TorsionAnglePlot
 
 
-class TorsionAngle(Trajectory):
+class TorsionAngle(TorsionAnglePlot, Trajectory):
     def __init__(self, env, mda_universe, torsion_angles_dir):
         self.mda_universe = mda_universe
         self.env = env
@@ -20,8 +21,10 @@ class TorsionAngle(Trajectory):
 
     def torsion_trajectory_analysis(self, input_torsion_params, start_frame=0):
         torsion_stats = {}
+
         for torsion_name, torsion_values in input_torsion_params["vars"].items():
             torsion_stats[torsion_name] = {}
+
             for torsion_type, torsion_selection in torsion_values.items():
                 torsion_stats[torsion_name][torsion_type] = {}
 
@@ -47,6 +50,14 @@ class TorsionAngle(Trajectory):
                     torsion_angles, start_frame
                 )
 
+                time_series = np.arange(
+                    0, self.get_trajectory_time_in_ns(), self.ns_per_frame()
+                )
+
+                self.two_dimensional_scatter(
+                    time_series, torsion_angles, torsion_name_dir, torsion_type,
+                )
+
             torsion_stats_file_path = os.path.join(
                 torsion_name_dir, torsion_name + "_torsion_angle_stats.txt"
             )
@@ -54,11 +65,6 @@ class TorsionAngle(Trajectory):
             self._write_torsion_stats(torsion_stats, torsion_stats_file_path)
 
             self.ns_per_frame()
-
-            time_series = np.arange(
-                0, self.get_trajectory_time_in_ns(), self.ns_per_frame()
-            )
-            self._torsion_angle_against_time_scatter(torsion_angles, time_series)
             # self._torsion_angles_scatter(x_axis_torsions, y_axis_torsions)
 
     def atom_selection_torsions_for_trajectory(self, mda_dihedral):
@@ -113,23 +119,10 @@ class TorsionAngle(Trajectory):
                 outf.write("\n\n")
 
     def _torsion_angles_scatter(x_axis_torsions, y_axis_torsions):
-        phi_list = [i[0] for i in x_values]
-        psi_list = [i[0] for i in y_values]
-        scatter_without_pmf_contour(phi_list, psi_list, plot_file_path, x_key, y_key)
-
-    def _torsion_angle_against_time_scatter(self, torsion_angles, time_series):
-
         x_key = torsion_values.get("x_key", None)
         y_key = torsion_values.get("y_key", None)
-
-        plot_file_path = os.path.join(
-            self.torsion_angles_dir, torsion_name, x_key + "_" + y_key
-        )
-
-        scatter.make_scatter(
-            x_key,
-            phi_list,
-            [t for t in range(len(phi_list))],
-            x_key,
-            os.path.join(output_dir, "torsion_angles", torsion_name),
+        phi_list = [i[0] for i in x_values]
+        psi_list = [i[0] for i in y_values]
+        scatter.scatter_without_pmf_contour(
+            phi_list, psi_list, plot_file_path, x_key, y_key
         )

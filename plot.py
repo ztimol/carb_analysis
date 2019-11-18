@@ -1,35 +1,38 @@
+import matplotlib.pyplot as plt
+import numpy as np
+from trajectory import Trajectory
+
+
 class Plot:
 
-    def getOutfileName(fName, extra_name=None):
+    # def _getOutfileName(fName, extra_name=None):
 
-    try:
-        x = fName.split(".")[:-1]
-        outfile_name = "".join(x) + extra_name + ".png"
-    except:
-        outfile_name = fName + extra_name + ".png"
+    # try:
+    #     x = fName.split(".")[:-1]
+    #     outfile_name = "".join(x) + extra_name + ".png"
+    # except:
+    #     outfile_name = fName + extra_name + ".png"
 
-    return outfile_name
+    # return outfile_name
 
-    def scatter():
-        xmajortick = 10000  # scatter_params["xmajor"]
+    def two_dimensional_scatter(self, x_values, y_values, plot_file_path, **kwargs):
 
-        # ylabel =  # scatter_params["ylabel"]
+        scatter_params = kwargs.get("scatter_params", {})
+        y_label = scatter_params.get("y_label", "y")
 
-        outfileName = getOutfileName(fName, extra_name="time_series")
-        outfileName = os.path.join(out_dir, fName + "_" + outfileName)
+        xend = scatter_params.get("x_end")
+        xstart = scatter_params.get("x_start", 0)
+        x_major_tick = scatter_params.get("x_major_tick", 10)
 
         fig = plt.figure(figsize=(24, 12.76))
         ax = fig.gca()
         font = {"size": 40}
         plt.rc("font", **font)
-        plt.scatter(xList, yList, s=5, color="g")
+        plt.scatter(x_values, y_values, s=5, color="g")
 
-        xend = len(xList)  # scatter_params["xend"]  # or start
-        xstart = 0  # scatter_params["xstart"]  # or end
-
-        ax.xaxis.set_ticks(np.arange(xstart, xend + xmajortick, xmajortick))
+        ax.xaxis.set_ticks(np.arange(xstart, xend + x_major_tick, x_major_tick))
         plt.xlabel("time (ns)", fontsize=40)
-        plt.ylabel(ylabel, fontsize=40)
+        plt.ylabel(y_label, fontsize=40)
         plt.xlim([xstart, xend])
         plt.ylim([-200, 200])
         ax.tick_params(axis="x", labelsize=35)
@@ -38,5 +41,5 @@ class Plot:
 
         # fig.savefig(outfileName, dpi=400, format="png")
 
-        plt.savefig(outfileName, dpi=400, format="png")
+        plt.savefig(plot_file_path, dpi=400, format="png")
         plt.close()
