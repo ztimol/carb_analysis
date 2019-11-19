@@ -52,6 +52,11 @@ class Config:
         torsion_name = torsion_input_values[1].strip()
         torsion_type = torsion_input_values[2].strip()
 
+        if "vars" not in torsion_params:
+            torsion_params["vars"] = {}
+        if "plots" not in torsion_params:
+            torsion_params["plots"] = {}
+
         if torsion_type == "scatter":
             try:
                 torsion_params["plots"][torsion_name] = {
@@ -60,7 +65,6 @@ class Config:
                 }
 
             except KeyError:
-                torsion_params["plots"] = {}
                 torsion_params["plots"][torsion_name] = {
                     "x_key": torsion_input_values[3].strip(),
                     "y_key": torsion_input_values[4].strip(),
