@@ -1,15 +1,16 @@
 import os
+import numpy as np
 from plot import Plot
 
 
 class TorsionAnglePlot(Plot):
     def time_series_scatter(
-        self, time_series, torsion_angles, torsion_name_dir, torsion_type,
+        self, time_series, torsion_angles, torsion_name_dir, torsion_type
     ):
         scatter_params = {
             "y_label": "$\\" + torsion_type + "$",
             "x_label": "time (ns)",
-            "x_major_tick": 5,
+            "x_major_tick": 200,
             "y_end": 180,
             "y_start": -180,
             "torsion_type": torsion_type,
@@ -20,10 +21,7 @@ class TorsionAnglePlot(Plot):
             torsion_name_dir, torsion_type + "_time_series.png"
         )
         self.two_dimensional_scatter(
-            time_series,
-            torsion_angles,  # [i[0] for i in torsion_angles],
-            plot_file_path,
-            scatter_params=scatter_params,
+            time_series, torsion_angles, plot_file_path, scatter_params=scatter_params
         )
 
     def torsion_angles_scatter(
@@ -47,5 +45,18 @@ class TorsionAnglePlot(Plot):
     def two_dimensional_scatter(self, x_values, y_values, plot_file_path, **kwargs):
         scatter_params = kwargs.get("scatter_params", {})
         super().two_dimensional_scatter(
-            x_values, y_values, plot_file_path, scatter_params=scatter_params,
+            x_values, y_values, plot_file_path, scatter_params=scatter_params
         )
+
+    def probability_histogram(self, data_list, torsion_name_dir, torsion_type):
+        histogram_params = {
+            "x_label": "$\\" + torsion_type + "$",
+            "x_major_tick": 30,
+            "bins": list(np.arange(-180, 180, 30)),
+        }
+        plot_file_path = os.path.join(torsion_name_dir, torsion_type + "_histogram.png")
+        self.histogram(data_list, plot_file_path, histogram_params=histogram_params)
+
+    def histogram(self, data_list, plot_file_path, **kwargs):
+        histogram_params = kwargs.get("histogram_params", {})
+        super().histogram(data_list, plot_file_path, histogram_params=histogram_params)

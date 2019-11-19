@@ -59,7 +59,11 @@ class TorsionAngle(TorsionAnglePlot, Trajectory):
                 )
 
                 self.time_series_scatter(
-                    time_series, torsion_angles, torsion_name_dir, torsion_type,
+                    time_series, torsion_angles, torsion_name_dir, torsion_type
+                )
+
+                self.probability_histogram(
+                    torsion_angles, torsion_name_dir, torsion_type
                 )
 
             torsion_stats_file_path = os.path.join(
@@ -68,16 +72,9 @@ class TorsionAngle(TorsionAnglePlot, Trajectory):
 
             self._write_torsion_stats(torsion_stats, torsion_stats_file_path)
 
-            for torsion_plot_name, plot_values in self.env["torsions"]["plots"].items():
-                if torsion_plot_name == torsion_name:
-                    x_key = plot_values["x_key"]
-                    y_key = plot_values["y_key"]
-
-                    x_series = torsion_stats[torsion_plot_name][x_key]["torsion_angles"]
-                    y_series = torsion_stats[torsion_plot_name][y_key]["torsion_angles"]
-                    self.torsion_angles_scatter(
-                        x_series, y_series, x_key, y_key, torsion_name_dir
-                    )
+            self._create_additional_torsional_plots(
+                torsion_name, torsion_name_dir, torsion_stats
+            )
 
     def atom_selection_torsions_for_trajectory(self, mda_dihedral):
         return mda_dihedral.run().angles
@@ -129,3 +126,17 @@ class TorsionAngle(TorsionAnglePlot, Trajectory):
                         outf.write(str(stat_value))
                         outf.write("\n")
                 outf.write("\n\n")
+
+    def _create_additional_torsional_plots(
+        self, torsion_name, torsion_name_dir, torsion_stats
+    ):
+        for torsion_plot_name, plot_values in self.env["torsions"]["plots"].items():
+            if torsion_plot_name == torsion_name:
+                x_key = plot_values["x_key"]
+                y_key = plot_values["y_key"]
+
+                x_series = torsion_stats[torsion_plot_name][x_key]["torsion_angles"]
+                y_series = torsion_stats[torsion_plot_name][y_key]["torsion_angles"]
+                self.torsion_angles_scatter(
+                    x_series, y_series, x_key, y_key, torsion_name_dir
+                )

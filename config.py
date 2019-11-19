@@ -72,7 +72,7 @@ class Config:
             try:
                 torsion_params["vars"][torsion_name][torsion_type] = torsion_selection
             except KeyError:
-                torsion_params["vars"] = {torsion_name: {}}
+                torsion_params["vars"][torsion_name] = {}
                 torsion_params["vars"][torsion_name][torsion_type] = torsion_selection
 
         return torsion_params
