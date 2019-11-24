@@ -7,8 +7,14 @@ class TorsionAnglePlot(Plot):
     def time_series_scatter(
         self, time_series, torsion_angles, torsion_name_dir, torsion_type
     ):
+
+        try:
+            y_label = "$\\" + torsion_type + "$"
+        except:
+            y_label = torsion_type
+
         scatter_params = {
-            "y_label": "$\\" + torsion_type + "$",
+            "y_label": y_label,
             "x_label": "time (ns)",
             "x_major_tick": 200,
             "y_end": 180,
@@ -27,9 +33,20 @@ class TorsionAnglePlot(Plot):
     def torsion_angles_scatter(
         self, x_series, y_series, x_key, y_key, torsion_name_dir
     ):
+
+        try:
+            y_label = "$\\" + y_key + "$"
+        except:
+            y_label = y_key
+
+        try:
+            x_label = "$\\" + x_key + "$"
+        except:
+            x_label = x_key
+
         scatter_params = {
-            "y_label": "$\\" + y_key + "$",
-            "x_label": "$\\" + x_key + "$",
+            "y_label": y_label,
+            "x_label": x_label,
             "x_major_tick": 60,
             "x_end": 180,
             "x_start": -180,

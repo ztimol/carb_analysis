@@ -28,7 +28,18 @@ class TorsionAngle(TorsionAnglePlot, Trajectory):
             for torsion_type, torsion_selection in torsion_values.items():
                 torsion_stats[torsion_name][torsion_type] = {}
 
-                mda_atom_selection = self.mda_universe.select_atoms(torsion_selection)
+                try:
+                    atom_indexes = torsion_selection.split()
+                    mda_atom_selection = self.mda_universe.select_atoms(
+                        "index " + atom_indexes[0],
+                        "index " + atom_indexes[1],
+                        "index " + atom_indexes[2],
+                        "index " + atom_indexes[3],
+                    )
+                except:
+                    mda_atom_selection = self.mda_universe.select_atoms(
+                        torsion_selection
+                    )
 
                 mda_dihedral = Dihedral([mda_atom_selection])
 
