@@ -6,17 +6,6 @@ from trajectory import Trajectory
 
 
 class Plot:
-
-    # def _getOutfileName(fName, extra_name=None):
-
-    # try:
-    #     x = fName.split(".")[:-1]
-    #     outfile_name = "".join(x) + extra_name + ".png"
-    # except:
-    #     outfile_name = fName + extra_name + ".png"
-
-    # return outfile_name
-
     def two_dimensional_scatter(self, x_values, y_values, plot_file_path, **kwargs):
 
         scatter_params = kwargs.get("scatter_params", {})
@@ -35,7 +24,7 @@ class Plot:
         ax = fig.gca()
         # font = {"size": 40}
         # plt.rc("font", **font)
-        plt.scatter(x_values, y_values, s=5, color="g")
+        plt.scatter(x_values, y_values, s=5, color="r")
 
         ax.xaxis.set_ticks(np.arange(x_start, x_end + x_major_tick, x_major_tick))
         plt.xlabel(x_label)

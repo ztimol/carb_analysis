@@ -2,8 +2,6 @@ import sys, os
 import argparse
 import MDAnalysis as mda
 
-from pmf_multi import scatter_without_pmf_contour
-
 from config import Config
 from analysis import Analysis
 import scatter

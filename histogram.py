@@ -45,7 +45,7 @@ def makeHistogram(data_file_name, data_list, histogram_params):
     plt.gca().yaxis.set_major_formatter(PercentFormatter(1))
     plt.xlabel(xlabel)
     # plt.xlim([0, 10])
-    plt.ylim([0, 0.05])
+    plt.ylim([0, 0.08])
     ax.xaxis.set_ticks(np.arange(0, 21, 1))
     ax.yaxis.set_ticks(np.arange(0, 0.06, 0.01))
     plt.rc("font", **font)

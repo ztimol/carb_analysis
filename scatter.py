@@ -25,7 +25,7 @@ def make_scatter(fName, yList, xList, ylabel, out_dir):
     ax = fig.gca()
     font = {"size": 40}
     plt.rc("font", **font)
-    plt.scatter(xList, yList, s=5, color="g")
+    plt.scatter(xList, yList, s=5, color="r")
 
     xend = len(xList)  # scatter_params["xend"]  # or start
     xstart = 0  # scatter_params["xstart"]  # or end
