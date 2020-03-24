@@ -25,15 +25,13 @@ class Config:
                     cleaned_line = clean_string(line)
                     field_name = cleaned_line.split()[0]
                     if field_name == "torsion":
-                        try:
-                            config_params["torsions"] = self._get_torsion_params(
-                                cleaned_line, config_params["torsions"]
-                            )
-                        except KeyError:
-                            config_params["torsions"] = {}
-                            config_params["torsions"] = self._get_torsion_params(
-                                cleaned_line, config_params["torsions"]
-                            )
+                        config_params = self._handle_torsion_field(
+                            cleaned_line, config_params
+                        )
+                    elif field_name == "namd_energy":
+                        config_params = self._handle_namd_energy_field(
+                            cleaned_line, config_params
+                        )
                     elif field_name == "frames_per_ns":
                         config_params[field_name] = eval(line.split()[1])
                     else:
@@ -45,6 +43,18 @@ class Config:
             return True
         else:
             return False
+
+    def _handle_torsion_field(self, cleaned_line, config_params):
+        try:
+            config_params["torsions"] = self._get_torsion_params(
+                cleaned_line, config_params["torsions"]
+            )
+        except KeyError:
+            config_params["torsions"] = {}
+            config_params["torsions"] = self._get_torsion_params(
+                cleaned_line, config_params["torsions"]
+            )
+        return config_params
 
     def _get_torsion_params(self, line, torsion_params):
 
@@ -96,3 +106,18 @@ class Config:
 
     def get_torsion_x_axis_key(torsion_name):
         return
+
+    def _handle_namd_energy_field(self, cleaned_line, config_params):
+        try:
+            config_params["namd_energies"] = self._get_namd_energy_params(
+                cleaned_line, config_params["namd_energies"]
+            )
+        except KeyError:
+            config_params["namd_energies"] = {}
+            config_params["namd_energies"] = self._get_namd_energy_params(
+                cleaned_line, config_params["namd_energies"]
+            )
+        return config_params
+
+    def _get_namd_energy_params(self, line, namd_energy_params):
+        return namd_energy_params[line.split()[1]] = line.split()[2]

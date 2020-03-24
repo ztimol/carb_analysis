@@ -2,7 +2,7 @@ import os
 import numpy as np
 from MDAnalysis.analysis.dihedrals import Dihedral
 from trajectory import Trajectory
-from torsion_angle_plot import TorsionAnglePlot
+from torsion.torsion_angle_plot import TorsionAnglePlot
 
 
 class TorsionAngle(TorsionAnglePlot, Trajectory):

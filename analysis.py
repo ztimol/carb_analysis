@@ -1,8 +1,8 @@
 import os
 import MDAnalysis as mda
 from trajectory import Trajectory
-from torsion_angle import TorsionAngle
-from atom_distance import AtomDistance
+from torsion.torsion_angle import TorsionAngle
+from atom_distance.atom_distance import AtomDistance
 
 
 class Analysis(Trajectory):

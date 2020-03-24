@@ -1,6 +1,6 @@
 import os
 import numpy as np
-from plot import Plot
+from plot.plot import Plot
 
 
 class TorsionAnglePlot(Plot):
