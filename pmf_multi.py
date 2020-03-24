@@ -69,7 +69,7 @@ def scatter_with_pmf_contour(pmf_file, xList, yList):
 
     plt.clabel(CS, CS.levels, inline=True, fmt="%r ", fontsize=8)
 
-    plt.scatter(xList, yList, s=5, color="r")
+    plt.scatter(xList, yList, s=5, color="g")
 
     a.set_xlabel("$\phi$", fontsize=20)
     a.set_ylabel("$\psi$", fontsize=20)
@@ -92,7 +92,7 @@ def scatter_without_pmf_contour(xList, yList, outfile_name, x_key, y_key):
     # a.set_yticks((-120, -60, 0, 60, 120))
     # a.tick_params(axis="both", labelsize=10)
 
-    plt.scatter(xList, yList, s=5, color="r")
+    plt.scatter(xList, yList, s=5, color="g")
     plt.xlabel("$\\" + x_key + "$", fontsize=20)
     plt.ylabel("$\\" + y_key + "$", fontsize=20)
     # plt.ylabel("$\psi$", fontsize=20)

@@ -4,7 +4,6 @@ import MDAnalysis as mda
 
 from config import Config
 from analysis import Analysis
-import scatter
 
 
 parser = argparse.ArgumentParser(description="MD Analysis")

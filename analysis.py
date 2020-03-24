@@ -28,6 +28,23 @@ class Analysis(Trajectory):
         torsion = TorsionAngle(self.env, self.mda_universe, torsion_angles_dir)
         torsion.torsion_trajectory_analysis()
 
+    def rmsd_analysis(self, env):
+        output_dir = env["input_params"].get("output_dir", "output")
+
+        try:
+            if self.env["atom_rmsd"]:
+                atom_rmsds_dir = os.path.join(output_dir, "atom_rmsds")
+                if not os.path.exists(atom_rmsds_dir):
+                    os.mkdir(atom_rmsds_dir)
+        except KeyError:
+            print(
+                "no atom rmsds specified in config file. Don't run atom rmsd analysis."
+            )
+            return
+
+        atom_rmsd = AtomRmsd(self.env, self.mda_universe, atom_rmsds_dir)
+        atom_rmsd.atom_rmsd_trajectory_analysis()
+
     def distance_analysis(self, env):
         output_dir = env["input_params"].get("output_dir", "output")
 

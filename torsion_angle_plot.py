@@ -16,7 +16,7 @@ class TorsionAnglePlot(Plot):
         scatter_params = {
             "y_label": y_label,
             "x_label": "time (ns)",
-            "x_major_tick": 10,
+            "x_major_tick": 50,
             "y_end": 180,
             "y_start": -180,
             "torsion_type": torsion_type,
@@ -47,7 +47,7 @@ class TorsionAnglePlot(Plot):
         scatter_params = {
             "y_label": y_label,
             "x_label": x_label,
-            "x_major_tick": 100,
+            "x_major_tick": 60,
             "x_end": 180,
             "x_start": -180,
             "y_end": 180,
@@ -69,7 +69,7 @@ class TorsionAnglePlot(Plot):
         histogram_params = {
             "x_label": "$\\" + torsion_type + "$",
             "x_major_tick": 30,
-            "bins": list(np.arange(-180, 180, 30)),
+            "bins": list(np.arange(-180, 210, 30)),
         }
         plot_file_path = os.path.join(torsion_name_dir, torsion_type + "_histogram.png")
         self.histogram(data_list, plot_file_path, histogram_params=histogram_params)
