@@ -120,4 +120,5 @@ class Config:
         return config_params
 
     def _get_namd_energy_params(self, line, namd_energy_params):
-        return namd_energy_params[line.split()[1]] = line.split()[2]
+        namd_energy_params[line.split()[1]] = line.split()[2]
+        return namd_energy_params

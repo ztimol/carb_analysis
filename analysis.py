@@ -3,6 +3,7 @@ import MDAnalysis as mda
 from trajectory import Trajectory
 from torsion.torsion_angle import TorsionAngle
 from atom_distance.atom_distance import AtomDistance
+from namd_energy.namd_energy import NAMDEnergy
 
 
 class Analysis(Trajectory):
@@ -13,23 +14,42 @@ class Analysis(Trajectory):
         )
         super().__init__(env)
 
+        self.output_dir = self.env.get("output_dir")
+
     def torsion_analysis(self):
-        output_dir = self.env.get("output_dir", "output")
 
         try:
             if self.env["torsions"]:
-                torsion_angles_dir = os.path.join(output_dir, "torsion_angles")
+                torsion_angles_dir = os.path.join(self.output_dir, "torsion_angles")
                 if not os.path.exists(torsion_angles_dir):
                     os.mkdir(torsion_angles_dir)
         except KeyError:
-            print("no torsions specified in config file. Don't run torsion analysis.")
+            # print("No torsions specified in config file. Don't run torsion analysis.")
             return
 
         torsion = TorsionAngle(self.env, self.mda_universe, torsion_angles_dir)
         torsion.torsion_trajectory_analysis()
 
+    def namd_energy_analysis(self):
+
+        try:
+            if self.env["namd_energies"]:
+                namd_energy_dir = os.path.join(self.output_dir, "namd_energies")
+                if not os.path.exists(namd_energy_dir):
+                    os.mkdir(namd_energy_dir)
+        except KeyError:
+            print(
+                "No NAMD energy params specified in config file. Don't run NAMD energy analysis."
+            )
+            return
+
+        # TO DO: check if namd2 executable path is included as namd_path field
+        namd_energy = NAMDEnergy(self.env, self.mda_universe, namd_energy_dir)
+
+        namd_energy.namd_single_point_energy_analysis()
+
     def rmsd_analysis(self, env):
-        output_dir = env["input_params"].get("output_dir", "output")
+        output_dir = env["input_params"].get("output_dir")
 
         try:
             if self.env["atom_rmsd"]:
@@ -46,7 +66,7 @@ class Analysis(Trajectory):
         atom_rmsd.atom_rmsd_trajectory_analysis()
 
     def distance_analysis(self, env):
-        output_dir = env["input_params"].get("output_dir", "output")
+        output_dir = env["input_params"].get("output_dir")
 
         try:
             if self.env["atom_distance"]:

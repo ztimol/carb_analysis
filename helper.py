@@ -66,3 +66,8 @@ def confirm_critical_file_exists(file_path):
 
 def convert_frames_to_ns(num_frames, frames_per_ns):
     return num_frames / frames_per_ns
+
+
+def get_output_dir_name_from_config_file_args(config_file_args):
+    file_name = config_file_args.split("/")[-1]
+    return file_name.split(".")[0]
