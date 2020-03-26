@@ -32,6 +32,10 @@ class Config:
                         config_params = self._handle_namd_energy_field(
                             cleaned_line, config_params
                         )
+                    elif field_name == "ring_pucker":
+                        config_params = self._handle_ring_pucker_field(
+                            cleaned_line, config_params
+                        )
                     elif field_name == "frames_per_ns":
                         config_params[field_name] = eval(line.split()[1])
                     else:
@@ -122,3 +126,23 @@ class Config:
     def _get_namd_energy_params(self, line, namd_energy_params):
         namd_energy_params[line.split()[1]] = line.split()[2]
         return namd_energy_params
+
+    def _handle_ring_pucker_field(self, cleaned_line, config_params):
+        try:
+            config_params["ring_puckers"] = self._get_ring_pucker_params(
+                cleaned_line, config_params["ring_puckers"]
+            )
+        except KeyError:
+            config_params["ring_puckers"] = {}
+            config_params["ring_puckers"] = self._get_ring_pucker_params(
+                cleaned_line, config_params["ring_puckers"]
+            )
+        return config_params
+
+    def _get_ring_pucker_params(self, line, ring_pucker_params):
+        ring_pucker_name = line.split()[1].strip()
+        ring_pucker_selection = line[
+            line.find(ring_pucker_name) + len(ring_pucker_name) :
+        ].strip()[1:-1]
+        ring_pucker_params[ring_pucker_name] = ring_pucker_selection
+        return ring_pucker_params

@@ -4,6 +4,7 @@ from trajectory import Trajectory
 from torsion.torsion_angle import TorsionAngle
 from atom_distance.atom_distance import AtomDistance
 from namd_energy.namd_energy import NAMDEnergy
+from ring_pucker.cp_ring_pucker import CPRingPucker
 
 
 class Analysis(Trajectory):
@@ -24,7 +25,9 @@ class Analysis(Trajectory):
                 if not os.path.exists(torsion_angles_dir):
                     os.mkdir(torsion_angles_dir)
         except KeyError:
-            # print("No torsions specified in config file. Don't run torsion analysis.")
+            print(
+                "No torsions specified in config file. Will not perform torsion analysis.\n"
+            )
             return
 
         torsion = TorsionAngle(self.env, self.mda_universe, torsion_angles_dir)
@@ -39,7 +42,7 @@ class Analysis(Trajectory):
                     os.mkdir(namd_energy_dir)
         except KeyError:
             print(
-                "No NAMD energy params specified in config file. Don't run NAMD energy analysis."
+                "No NAMD energy params specified in config file. Will not perform NAMD energy analysis.\n"
             )
             return
 
@@ -47,6 +50,24 @@ class Analysis(Trajectory):
         namd_energy = NAMDEnergy(self.env, self.mda_universe, namd_energy_dir)
 
         namd_energy.namd_single_point_energy_analysis()
+
+    def ring_pucker_analysis(self):
+
+        try:
+            if self.env["ring_puckers"]:
+                ring_pucker_dir = os.path.join(self.output_dir, "ring_pucker")
+                if not os.path.exists(ring_pucker_dir):
+                    os.mkdir(ring_pucker_dir)
+        except KeyError:
+            print(
+                "No ring pucker params specified in config file. Will not perform ring pucker analysis.\n"
+            )
+            return
+
+        # TO DO: check if namd2 executable path is included as namd_path field
+        ring_pucker = CPRingPucker(self.env, self.mda_universe, ring_pucker_dir)
+
+        ring_pucker.cp_ring_pucker_analysis()
 
     def rmsd_analysis(self, env):
         output_dir = env["input_params"].get("output_dir")

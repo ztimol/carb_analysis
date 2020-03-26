@@ -4,8 +4,6 @@ import subprocess as sp
 from trajectory import Trajectory
 from namd_energy.namd_energy_plot import NAMDEnergyPlot
 
-# from namd_energy.torsion_angle_plot import NAMDEnergyPlot
-
 
 class NAMDEnergy(NAMDEnergyPlot, Trajectory):
     def __init__(self, env, mda_universe, namd_energies_dir):

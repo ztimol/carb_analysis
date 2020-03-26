@@ -1,4 +1,6 @@
 matplotlib
 scipy
 argparse
+statistics
 mdanalysis==0.20.1
+

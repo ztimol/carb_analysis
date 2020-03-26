@@ -50,6 +50,7 @@ def main():
 
     structure_analysis.torsion_analysis()
     structure_analysis.namd_energy_analysis()
+    structure_analysis.ring_pucker_analysis()
 
     finalise_analysis()
 
