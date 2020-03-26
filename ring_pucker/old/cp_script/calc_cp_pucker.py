@@ -288,8 +288,13 @@ def calc_cremer_pople_q2(q2_cos_phi2, q2_sin_phi2):
 def calc_cremer_pople_phi(q2_cos_phi2, q2_sin_phi2):
     tan_phi2 = q2_sin_phi2 / q2_cos_phi2
 
-    # not full sure why the '+ 180' is needed but it is.
-    return math.atan(tan_phi2) + math.pi
+    phi2 = math.atan(tan_phi2)
+
+    # not full sure why the '+ 360' is needed but it is.
+    if phi2 < 0:
+        return phi2 + (2 * math.pi)
+
+    return phi2
 
 
 def calc_cremer_pople_q3(ring_atom_z_values):

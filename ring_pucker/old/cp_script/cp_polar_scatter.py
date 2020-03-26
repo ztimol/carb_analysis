@@ -39,6 +39,7 @@ def get_cremer_pople_parameters(env_params):
             q_per_ns.append(q)
             theta_per_ns.append(theta)
             phi_per_ns.append(phi)
+            print(theta, time_in_ns)
 
     inf.close()
 

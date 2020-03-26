@@ -15,15 +15,18 @@ class CPRingPucker(Trajectory):
         for ring_pucker_name, ring_pucker_atom_selection in self.env[
             "ring_puckers"
         ].items():
-            self._calc_cremer_pople_ring_values_per_frame(
-                ring_pucker_name, ring_pucker_atom_selection
+
+            trajectory_cp_pucker_values = self._calc_cremer_pople_ring_values_per_frame(
+                ring_pucker_atom_selection
             )
 
-    def _calc_cremer_pople_ring_values_per_frame(
-        self, ring_pucker_name, ring_pucker_atom_selection
-    ):
+            self._write_cremer_pople_values_for_trajectory(
+                ring_pucker_name, trajectory_cp_pucker_values
+            )
 
-        cremer_pople_pucker_values_per_frame = {}
+    def _calc_cremer_pople_ring_values_per_frame(self, ring_pucker_atom_selection):
+
+        trajectory_cp_pucker_values = {}
 
         for frame in self.mda_universe.trajectory:
             ring_center_of_geo = self.mda_universe.select_atoms(
@@ -59,15 +62,13 @@ class CPRingPucker(Trajectory):
             cremer_pople_phi2_deg = (cremer_pople_phi2 * 180) / math.pi
             cremer_pople_theta_deg = (cremer_pople_theta * 180) / math.pi
 
-            cremer_pople_pucker_values_per_frame[frame.frame] = {
+            trajectory_cp_pucker_values[frame.frame] = {
                 "cremer_pople_Q_value": cremer_pople_Q_value,
                 "cremer_pople_phi2_deg": cremer_pople_phi2_deg,
                 "cremer_pople_theta_deg": cremer_pople_theta_deg,
             }
 
-        import pdb
-
-        pdb.set_trace()
+        return trajectory_cp_pucker_values
 
     def _calc_ring_atom_position_vectors_from_geometric_center(
         self, ring_center_of_geo, ring_pucker_atom_selection
@@ -75,6 +76,10 @@ class CPRingPucker(Trajectory):
         ring_atom_coordinates = self.mda_universe.select_atoms(
             ring_pucker_atom_selection
         ).positions
+
+        ring_atom_coordinates = self._reorder_atom_values_to_match_cp_requirments(
+            ring_pucker_atom_selection, np.ndarray.tolist(ring_atom_coordinates)
+        )
 
         ring_x_coors = [i[0] for i in ring_atom_coordinates]
         ring_y_coors = [i[1] for i in ring_atom_coordinates]
@@ -239,8 +244,13 @@ class CPRingPucker(Trajectory):
     def _calc_cremer_pople_phi(self, q2_cos_phi2, q2_sin_phi2):
         tan_phi2 = q2_sin_phi2 / q2_cos_phi2
 
-        # not full sure why the '+ 180' is needed but it is.
-        return math.atan(tan_phi2) + math.pi
+        phi2 = math.atan(tan_phi2)
+
+        # not full sure why the '+ 360' is needed but it is.
+        if phi2 < 0:
+            return phi2 + (2 * math.pi)
+
+        return phi2
 
     def _calc_cremer_pople_q3(self, ring_atom_z_values):
 
@@ -263,3 +273,73 @@ class CPRingPucker(Trajectory):
             return abs(math.atan(round(tan_theta, 5)))
         elif tan_theta > 0:
             return math.pi - math.atan(round(tan_theta, 5))
+
+    def _get_ring_atom_index_from_name(self, ring_pucker_atom_selection, atom_name):
+        ring_atom_names = self.mda_universe.select_atoms(
+            ring_pucker_atom_selection
+        ).names
+        atom_index = np.ndarray.tolist(ring_atom_names).index(atom_name)
+        return atom_index
+
+    def _write_cremer_pople_values_for_trajectory(
+        self, ring_pucker_name, cremer_pople_pucker_values_per_frame
+    ):
+
+        ring_pucker_name_dir = os.path.join(self.ring_pucker_dir, ring_pucker_name)
+
+        if not os.path.exists(ring_pucker_name_dir):
+            os.mkdir(ring_pucker_name_dir)
+
+        cremer_pople_params_path = os.path.join(
+            ring_pucker_name_dir, "trajectory_cp_phi_theta_Q.dat"
+        )
+
+        with open(cremer_pople_params_path, "w") as cp_outfile:
+            for frame_number, cp_params in cremer_pople_pucker_values_per_frame.items():
+                cp_outfile.write(str(frame_number))
+                cp_outfile.write(" ")
+                cp_outfile.write(str(cp_params["cremer_pople_phi2_deg"]))
+                cp_outfile.write(" ")
+                cp_outfile.write(str(cp_params["cremer_pople_theta_deg"]))
+                cp_outfile.write(" ")
+                cp_outfile.write(str(cp_params["cremer_pople_Q_value"]))
+                cp_outfile.write("\n")
+
+    def _reorder_atom_values_to_match_cp_requirments(
+        self, ring_pucker_atom_selection, list_to_be_reordered
+    ):
+
+        zero_atom_index = self._get_ring_atom_index_from_name(
+            ring_pucker_atom_selection, "O5"
+        )
+
+        first_atom_index = self._get_ring_atom_index_from_name(
+            ring_pucker_atom_selection, "C1"
+        )
+
+        second_atom_index = self._get_ring_atom_index_from_name(
+            ring_pucker_atom_selection, "C2"
+        )
+
+        third_atom_index = self._get_ring_atom_index_from_name(
+            ring_pucker_atom_selection, "C3"
+        )
+
+        fourth_atom_index = self._get_ring_atom_index_from_name(
+            ring_pucker_atom_selection, "C4"
+        )
+
+        fifth_atom_index = self._get_ring_atom_index_from_name(
+            ring_pucker_atom_selection, "C5"
+        )
+
+        reordered_list = [
+            list_to_be_reordered[zero_atom_index],
+            list_to_be_reordered[first_atom_index],
+            list_to_be_reordered[second_atom_index],
+            list_to_be_reordered[third_atom_index],
+            list_to_be_reordered[fourth_atom_index],
+            list_to_be_reordered[fifth_atom_index],
+        ]
+
+        return reordered_list
