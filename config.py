@@ -36,6 +36,10 @@ class Config:
                         config_params = self._handle_ring_pucker_field(
                             cleaned_line, config_params
                         )
+                    elif field_name == "atom_distance":
+                        config_params = self._handle_atom_distance_field(
+                            cleaned_line, config_params
+                        )
                     elif field_name == "frames_per_ns":
                         config_params[field_name] = eval(line.split()[1])
                     else:
@@ -101,6 +105,9 @@ class Config:
     def get_psf_file_path(self):
         return self.env.get("psf_file", None)
 
+    def get_pdb_file_path(self):
+        return self.env.get("pdb_file", None)
+
     def get_start_frame(self):
         return int(self.env["start_frame"])
 
@@ -146,3 +153,22 @@ class Config:
         ].strip()[1:-1]
         ring_pucker_params[ring_pucker_name] = ring_pucker_selection
         return ring_pucker_params
+
+    def _handle_atom_distance_field(self, cleaned_line, config_params):
+        try:
+            config_params["atom_distances"].append(
+                self._get_atom_distance_params(cleaned_line)
+            )
+        except KeyError:
+            config_params["atom_distances"] = []
+            config_params["atom_distances"].append(
+                self._get_atom_distance_params(cleaned_line)
+            )
+        return config_params
+
+    def _get_atom_distance_params(self, line):
+        field_name = line.split()[0].strip()
+        atom_distance_selection = line[
+            line.find(field_name) + len(field_name) :
+        ].strip()[1:-1]
+        return atom_distance_selection

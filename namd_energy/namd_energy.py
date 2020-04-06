@@ -1,6 +1,7 @@
 import os
 import numpy as np
 import subprocess as sp
+import shutil
 from trajectory import Trajectory
 from namd_energy.namd_energy_plot import NAMDEnergyPlot
 
@@ -12,7 +13,7 @@ class NAMDEnergy(NAMDEnergyPlot, Trajectory):
         self.namd_energies_dir = namd_energies_dir
 
     def namd_single_point_energy_analysis(self):
-        for namd_energy_name, config_file_path in self.env["namd_energies"].items():
+        for namd_energy_name, energy_type in self.env["namd_energies"].items():
 
             print(
                 "Performing single point energy calculation for "
@@ -27,8 +28,10 @@ class NAMDEnergy(NAMDEnergyPlot, Trajectory):
             if not os.path.exists(namd_energy_name_dir):
                 os.mkdir(namd_energy_name_dir)
 
+            self._create_namd_energy_config_file()
+
             potential_energies = self._calculate_namd_single_point_energy(
-                namd_energy_name_dir, namd_energy_name, config_file_path
+                namd_energy_name_dir, namd_energy_name
             )
 
             time_series = np.arange(
@@ -50,7 +53,7 @@ class NAMDEnergy(NAMDEnergyPlot, Trajectory):
             )
 
     def _calculate_namd_single_point_energy(
-        self, namd_energy_name_dir, namd_energy_name, config_file_path
+        self, namd_energy_name_dir, namd_energy_name
     ):
 
         log_file_path = os.path.join(namd_energy_name_dir, namd_energy_name + ".log")
@@ -58,11 +61,17 @@ class NAMDEnergy(NAMDEnergyPlot, Trajectory):
             namd_energy_name_dir, namd_energy_name + ".dat"
         )
 
-        namd_energy_calc_command = [self.env["namd_path"], "+p2", config_file_path]
+        namd_energy_calc_command = [
+            self.env["namd_path"],
+            "+p2",
+            "./namd_energy/md_energy.conf",
+        ]
 
         f = open(log_file_path, "w")
         sp.call(namd_energy_calc_command, stdout=f)
         f.close()
+
+        os.unlink("./namd_energy/md_energy.conf")
 
         potential_energies_per_frame = self._get_potential_energies_from_log_file(
             log_file_path
@@ -95,3 +104,29 @@ class NAMDEnergy(NAMDEnergyPlot, Trajectory):
                 out_file.write(str(potential_energy))
                 out_file.write("\n")
                 frame_number += 1
+
+    def _create_namd_energy_config_file(self):
+
+        with open(
+            "./namd_energy/md_energy_template.conf", "r"
+        ) as namd_energy_template_file:
+            namd_energy_config = namd_energy_template_file.read()
+
+        namd_energy_config = namd_energy_config.replace(
+            "__PSF_FILE_TOKEN__", self.get_psf_file_path()
+        )
+        namd_energy_config = namd_energy_config.replace(
+            "__PDB_FILE_TOKEN__", self.get_pdb_file_path()
+        )
+        namd_energy_config = namd_energy_config.replace(
+            "__DCD_TRAJCTORY_FILE_TOKEN__", self.get_dcd_file_path()
+        )
+
+        with open("./namd_energy/md_energy.conf", "w") as namd_energy_config_file:
+            namd_energy_config_file.write(namd_energy_config)
+
+        namd_energy_config_file_path = os.path.join(
+            self.namd_energies_dir, "md_energy.conf"
+        )
+
+        shutil.copy("./namd_energy/md_energy.conf", namd_energy_config_file_path)
