@@ -2,9 +2,10 @@ import os
 import math, statistics
 import numpy as np
 from trajectory import Trajectory
+from ring_pucker.cp_ring_pucker_plot import CPRingPuckerPlot
 
 
-class CPRingPucker(Trajectory):
+class CPRingPucker(CPRingPuckerPlot, Trajectory):
     def __init__(self, env, mda_universe, ring_pucker_dir):
         self.mda_universe = mda_universe
         self.env = env
@@ -23,6 +24,20 @@ class CPRingPucker(Trajectory):
             self._write_cremer_pople_values_for_trajectory(
                 ring_pucker_name, trajectory_cp_pucker_values
             )
+
+            phi_values = [
+                cp_params["cremer_pople_phi2_deg"]
+                for cp_params in trajectory_cp_pucker_values.values()
+            ]
+
+            theta_values = [
+                cp_params["cremer_pople_theta_deg"]
+                for cp_params in trajectory_cp_pucker_values.values()
+            ]
+
+            self._plot_cp_phi2_values(phi_values, ring_pucker_name)
+
+            self._plot_cp_theta_values(theta_values, ring_pucker_name)
 
     def _calc_cremer_pople_ring_values_per_frame(self, ring_pucker_atom_selection):
 
@@ -343,3 +358,41 @@ class CPRingPucker(Trajectory):
         ]
 
         return reordered_list
+
+    def _plot_cp_phi2_values(self, trajectory_cp_phi_values, ring_pucker_name):
+
+        time_series = np.arange(
+            0, self.get_trajectory_time_in_ns(), self.ns_per_frame()
+        )
+
+        ring_pucker_name_dir = os.path.join(self.ring_pucker_dir, ring_pucker_name)
+
+        self.cp_phi2_time_series_scatter(
+            time_series,
+            trajectory_cp_phi_values,
+            ring_pucker_name_dir,
+            "trajectory_cp_phi2",
+        )
+
+        self.cp_phi2_probability_histogram(
+            trajectory_cp_phi_values, ring_pucker_name_dir, "trajectory_cp_phi2"
+        )
+
+    def _plot_cp_theta_values(self, trajectory_cp_theta_values, ring_pucker_name):
+
+        time_series = np.arange(
+            0, self.get_trajectory_time_in_ns(), self.ns_per_frame()
+        )
+
+        ring_pucker_name_dir = os.path.join(self.ring_pucker_dir, ring_pucker_name)
+
+        self.cp_theta_time_series_scatter(
+            time_series,
+            trajectory_cp_theta_values,
+            ring_pucker_name_dir,
+            "trajectory_cp_theta",
+        )
+
+        self.cp_theta_probability_histogram(
+            trajectory_cp_theta_values, ring_pucker_name_dir, "trajectory_cp_theta"
+        )
