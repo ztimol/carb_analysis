@@ -16,11 +16,12 @@ class TorsionAnglePlot(Plot):
         scatter_params = {
             "y_label": y_label,
             "x_label": "time (ns)",
-            "x_major_tick": 50,
+            "x_major_tick": 100,
             "y_end": 180,
             "y_start": -180,
             "torsion_type": torsion_type,
             "x_end": self.get_trajectory_time_in_ns(),
+            "color": "r",
         }
 
         plot_file_path = os.path.join(

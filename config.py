@@ -88,15 +88,22 @@ class Config:
                     "y_key": torsion_input_values[4].strip(),
                 }
         else:
-            torsion_selection = line[
-                line.find(torsion_type) + len(torsion_type) :
-            ].strip()[1:-1]
+            index_of_first_flag = -1  # line.find("-")
+            index_of_torsion_type = line.find(torsion_type) + len(torsion_type)
+            torsion_selection = (
+                line[index_of_torsion_type:]
+                .strip()[1:index_of_first_flag]  # - index_of_torsion_type]
+                .replace("-", "")
+                .replace("'", "")
+                .replace('"', "")
+                .strip()
+            )  # extract atom selection from the line
+
             try:
                 torsion_params["vars"][torsion_name][torsion_type] = torsion_selection
             except KeyError:
                 torsion_params["vars"][torsion_name] = {}
                 torsion_params["vars"][torsion_name][torsion_type] = torsion_selection
-
         return torsion_params
 
     def get_dcd_file_path(self):
@@ -131,7 +138,7 @@ class Config:
         return config_params
 
     def _get_namd_energy_params(self, line, namd_energy_params):
-        namd_energy_params[line.split()[1]] = line.split()[2]
+        namd_energy_params[line.split()[1].strip()] = line.split()[2].strip()
         return namd_energy_params
 
     def _handle_ring_pucker_field(self, cleaned_line, config_params):

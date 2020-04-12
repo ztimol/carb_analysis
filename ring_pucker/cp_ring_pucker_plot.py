@@ -16,6 +16,7 @@ class CPRingPuckerPlot(Plot):
             "y_end": 360,
             "y_start": 0,
             "x_end": self.get_trajectory_time_in_ns(),
+            "color": "black",
         }
 
         plot_file_path = os.path.join(
@@ -36,6 +37,7 @@ class CPRingPuckerPlot(Plot):
             "y_end": 180,
             "y_start": 0,
             "x_end": self.get_trajectory_time_in_ns(),
+            "color": "black",
         }
 
         plot_file_path = os.path.join(
