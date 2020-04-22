@@ -107,26 +107,61 @@ class NAMDEnergy(NAMDEnergyPlot, Trajectory):
 
     def _create_namd_energy_config_file(self):
 
+        if self.is_amber_mode_enabled():
+            self._create_namd_energy_amber_config_file()
+        else:
+            self._create_namd_energy_charmm_config_file()
+
+    def _create_namd_energy_charmm_config_file(self):
+
         with open(
             "./namd_energy/md_energy_template.conf", "r"
         ) as namd_energy_template_file:
+
             namd_energy_config = namd_energy_template_file.read()
 
-        namd_energy_config = namd_energy_config.replace(
-            "__PSF_FILE_TOKEN__", self.get_psf_file_path()
-        )
-        namd_energy_config = namd_energy_config.replace(
-            "__PDB_FILE_TOKEN__", self.get_pdb_file_path()
-        )
-        namd_energy_config = namd_energy_config.replace(
-            "__DCD_TRAJCTORY_FILE_TOKEN__", self.get_dcd_file_path()
-        )
+            namd_energy_config = namd_energy_config.replace(
+                "__PSF_FILE_TOKEN__", self.get_psf_file_path()
+            )
+            namd_energy_config = namd_energy_config.replace(
+                "__PDB_FILE_TOKEN__", self.get_pdb_file_path()
+            )
+            namd_energy_config = namd_energy_config.replace(
+                "__DCD_TRAJCTORY_FILE_TOKEN__", self.get_dcd_file_path()
+            )
 
         with open("./namd_energy/md_energy.conf", "w") as namd_energy_config_file:
             namd_energy_config_file.write(namd_energy_config)
 
-        namd_energy_config_file_path = os.path.join(
-            self.namd_energies_dir, "md_energy.conf"
-        )
+            namd_energy_config_file_path = os.path.join(
+                self.namd_energies_dir, "md_energy.conf"
+            )
+
+        shutil.copy("./namd_energy/md_energy.conf", namd_energy_config_file_path)
+
+    def _create_namd_energy_amber_config_file(self):
+        with open(
+            "./namd_energy/md_energy_amber_template.conf"
+        ) as namd_energy_amber_template_file:
+
+            namd_energy_config = namd_energy_amber_template_file.read()
+
+            namd_energy_config = namd_energy_config.replace(
+                "__PARM7_FILE_TOKEN__", self.get_parm7_file_path()
+            )
+            namd_energy_config = namd_energy_config.replace(
+                "__RST7_FILE_TOKEN__", self.get_rst7_file_path()
+            )
+
+            namd_energy_config = namd_energy_config.replace(
+                "__DCD_TRAJCTORY_FILE_TOKEN__", self.get_dcd_file_path()
+            )
+
+        with open("./namd_energy/md_energy.conf", "w") as namd_energy_config_file:
+            namd_energy_config_file.write(namd_energy_config)
+
+            namd_energy_config_file_path = os.path.join(
+                self.namd_energies_dir, "md_energy.conf"
+            )
 
         shutil.copy("./namd_energy/md_energy.conf", namd_energy_config_file_path)
