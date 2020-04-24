@@ -30,8 +30,12 @@ class Analysis(Trajectory):
             )
             return
 
+        print("Commencing torsion angle calculations...")
+
         torsion = TorsionAngle(self.env, self.mda_universe, torsion_angles_dir)
         torsion.torsion_trajectory_analysis()
+
+        print("Completed torsion angle calculations.")
 
     def namd_energy_analysis(self):
 
@@ -46,10 +50,13 @@ class Analysis(Trajectory):
             )
             return
 
+        print("Commencing namd energy calculations...")
+
         # TO DO: check if namd2 executable path is included as namd_path field
         namd_energy = NAMDEnergy(self.env, self.mda_universe, namd_energy_dir)
-
         namd_energy.namd_single_point_energy_analysis()
+
+        print("Completed namd energy calculations.")
 
     def ring_pucker_analysis(self):
 
@@ -64,10 +71,12 @@ class Analysis(Trajectory):
             )
             return
 
-        # TO DO: check if namd2 executable path is included as namd_path field
-        ring_pucker = CPRingPucker(self.env, self.mda_universe, ring_pucker_dir)
+        print("Commencing puckering parameter calculations...")
 
+        ring_pucker = CPRingPucker(self.env, self.mda_universe, ring_pucker_dir)
         ring_pucker.cp_ring_pucker_analysis()
+
+        print("Completed puckering parameter calculations.")
 
     def distance_analysis(self):
 
@@ -78,9 +87,12 @@ class Analysis(Trajectory):
                     os.mkdir(atom_distances_dir)
         except KeyError:
             print(
-                "no atom distances specified in config file. Don't run atom distance analysis."
-            )
+                "No ring Atom pair distances specified in config file. Will not perform ring distance analysis.\n"
             return
 
+        print("Commencing atom pair distance calculations...")
+                
         atom_distance = AtomDistance(self.env, self.mda_universe, atom_distances_dir)
         atom_distance.atom_distance_trajectory_analysis()
+
+        print("Completed atom pair distance calculations...")
