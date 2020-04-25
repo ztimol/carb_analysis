@@ -9,8 +9,8 @@ class Trajectory(Config):
         self.dcd_file_path = self.get_dcd_file_path()
         self.psf_file_path = self.get_psf_file_path()
 
-        # we check for dcd and psf file existence here as opposed to a try,
-        # except later in the script so that we catch the error earlier
+        # we check for dcd and psf file existence here as opposed to an error
+        # handle later in the script so that we catch the error earlier
         # confirm_critical_file_exists(dcd_file_path)
         # confirm_critical_file_exists(psf_file_path)
 

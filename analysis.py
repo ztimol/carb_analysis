@@ -88,10 +88,11 @@ class Analysis(Trajectory):
         except KeyError:
             print(
                 "No ring Atom pair distances specified in config file. Will not perform ring distance analysis.\n"
+            )
             return
 
         print("Commencing atom pair distance calculations...")
-                
+
         atom_distance = AtomDistance(self.env, self.mda_universe, atom_distances_dir)
         atom_distance.atom_distance_trajectory_analysis()
 

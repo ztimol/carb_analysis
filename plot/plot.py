@@ -20,12 +20,13 @@ class Plot:
         y_start = scatter_params.get("y_start", 0)
         y_end = scatter_params.get("y_end")
 
-        color = scatter_params.get("color", "green")
+        color = scatter_params.get("color", "black")
 
         fig = plt.figure()
         ax = fig.gca()
         # font = {"size": 40}
         # plt.rc("font", **font)
+
         plt.scatter(x_values, y_values, s=5, color=color)
 
         ax.xaxis.set_ticks(np.arange(x_start, x_end + x_major_tick, x_major_tick))
