@@ -50,10 +50,10 @@ def calc_cp_theta_energy_stats():
 def calc_cp_pucker_pmf():
     x = CpPuckerEnergyPmf()
     x.read_trjectory_cp_puckering_parameters()
-    # x.count_cp_phi_and_cp_theta_by_bins()
     x.count_cp_theta_by_bins()
     x.calc_free_energy_for_bins()
-    # x.fix_free_energy()
+    x.write_theta_count_free_energy()
+    x.plot_free_energy_against_cp_theta()
 
 
 def main():
