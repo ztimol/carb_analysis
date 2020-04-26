@@ -122,9 +122,12 @@ class Config:
         return self.env.get("rst7_file", None)
 
     def is_amber_mode_enabled(self):
-        if self.env["amber"] == "yes":
-            return True
-        return False
+        try:
+            if self.env["amber"] == "yes":
+                return True
+            return False
+        except KeyError:
+            return False
 
     def get_start_frame(self):
         return int(self.env["start_frame"])

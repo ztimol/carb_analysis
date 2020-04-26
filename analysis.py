@@ -36,6 +36,7 @@ class Analysis(Trajectory):
         torsion.torsion_trajectory_analysis()
 
         print("Completed torsion angle calculations.")
+        print()
 
     def namd_energy_analysis(self):
 
@@ -57,6 +58,7 @@ class Analysis(Trajectory):
         namd_energy.namd_single_point_energy_analysis()
 
         print("Completed namd energy calculations.")
+        print()
 
     def ring_pucker_analysis(self):
 
@@ -77,6 +79,7 @@ class Analysis(Trajectory):
         ring_pucker.cp_ring_pucker_analysis()
 
         print("Completed puckering parameter calculations.")
+        print()
 
     def distance_analysis(self):
 
@@ -97,3 +100,4 @@ class Analysis(Trajectory):
         atom_distance.atom_distance_trajectory_analysis()
 
         print("Completed atom pair distance calculations...")
+        print()

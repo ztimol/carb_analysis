@@ -1,6 +1,9 @@
 import matplotlib.pyplot as plt
 from matplotlib.ticker import PercentFormatter
+from matplotlib import cm
 import numpy as np
+import scipy
+import helper
 from scipy.stats import gaussian_kde
 from trajectory import Trajectory
 
@@ -79,7 +82,7 @@ class Plot:
         fig.savefig(plot_file_path, dpi=400, format="png")
         plt.close()
 
-    def probability_density(x_list, y_list, plot_file_path, **kwargs):
+    def probability_density(self, x_list, y_list, plot_file_path, **kwargs):
         # fig = plt.figure(figsize=(48, 25))
         fig = plt.figure()
         ax = fig.gca()
@@ -100,3 +103,63 @@ class Plot:
         # plt.rc("font", **font)
 
         fig.savefig(plot_file_path, dpi=400, format="png")
+
+    def contour_plot(self, x_variables, y_variables, z_variables, out_file, **kwargs):
+
+        scatter_params = kwargs.get("scatter_params", {})
+
+        x_label = scatter_params.get("x_label")
+        y_label = scatter_params.get("y_label")
+        countour_levels = scatter_params.get("countour_levels")
+
+        if not countour_levels:
+            countour_levels = [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13,
+                14,
+                15,
+                16,
+            ]  # levels to draw contours at
+
+        fig = plt.figure()
+        a = fig.add_subplot(1, 1, 1)
+        smoothed_z_variables = scipy.ndimage.gaussian_filter(
+            z_variables, sigma=1
+        )  # bigger sigma = more smoothing; can go <1
+
+        CS = a.contour(
+            x_variables,
+            y_variables,
+            smoothed_z_variables,
+            countour_levels,
+            cmap=cm.binary,
+            linewidths=2,
+        )
+
+        # plt.clabel(CS, inline=1, fontsize=10)
+
+        # Recast levels to new class
+        CS.levels = [helper.nf(val) for val in CS.levels]
+
+        plt.clabel(CS, CS.levels, inline=True, fmt="%r ", fontsize=8)
+
+        a.set_xlabel(x_label)
+        a.set_ylabel(y_label)
+        a.set_xticks((0, 60, 120, 180, 240, 300, 360))
+        a.set_yticks((0, 30, 90, 60, 120, 150, 180))
+        a.tick_params(axis="both", labelsize=10)
+
+        fig.savefig(out_file, dpi=400, format="png")
+
+        plt.close()
