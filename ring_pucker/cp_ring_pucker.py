@@ -257,14 +257,14 @@ class CPRingPucker(CPRingPuckerPlot, Trajectory):
         return math.sqrt(q2_cos_phi2 ** 2 + q2_sin_phi2 ** 2)
 
     def _calc_cremer_pople_phi(self, q2_cos_phi2, q2_sin_phi2):
-        tan_phi2 = q2_sin_phi2 / q2_cos_phi2
+        phi2 = math.atan2(q2_sin_phi2, q2_cos_phi2) + math.pi
 
-        phi2 = math.atan(tan_phi2)
-
-        # not full sure why the '+ 360' is needed but it is.
-        if phi2 < 0:
-            return phi2 + (2 * math.pi)
-
+        # print(
+        #     frame_num,
+        #     (phi2 * 180 / math.pi),
+        #     # (phi2_alternate * 180 / math.pi),
+        #     (x * 180 / math.pi),
+        # )
         return phi2
 
     def _calc_cremer_pople_q3(self, ring_atom_z_values):
