@@ -116,16 +116,16 @@ class CpPuckerPhiThetaFreeEnergy(Trajectory):
 
     def write_phi_theta_count_free_energy(self):
 
-        data_file = "custom_scripts/output/phi_theta_count_free_energy.dat"
+        data_file = "custom_scripts/output/cp_phi_theta_free_energy.dat"
 
         with open(data_file, "w") as out_file:
             for cp_phi, phi_bin_values in self.cp_phi_theta_bin_values.items():
                 for cp_theta, phi_theta_bin_values in phi_bin_values.items():
                     out_file.write(
-                        "{cp_phi} {cp_theta} {count} {free_energy}\n".format(
+                        "{cp_phi} {cp_theta} {free_energy}\n".format(
                             cp_phi=cp_phi,
                             cp_theta=cp_theta,
-                            count=phi_theta_bin_values["count"],
+                            #              count=phi_theta_bin_values["count"],
                             free_energy=phi_theta_bin_values["free_energy_diff"],
                         )
                     )
@@ -147,3 +147,44 @@ class CpPuckerPhiThetaFreeEnergy(Trajectory):
                     ] = max_energy
 
         return cp_phi_theta_bin_values
+
+    def sort_cp_phi_cp_theta_binned_energies_for_contour(self):
+
+        cp_phi_values = []
+        cp_theta_values = []
+        free_energy_diff_values = []
+
+        for phi_bin, phi_bin_values in self.cp_phi_theta_bin_values.items():
+            cp_phi_values.append([])
+            cp_theta_values.append([])
+            free_energy_diff_values.append([])
+            for theta_bin, phi_theta_bin_values in phi_bin_values.items():
+                cp_phi_values[-1].append(phi_bin)
+                cp_theta_values[-1].append(theta_bin)
+                free_energy_diff_values[-1].append(
+                    phi_theta_bin_values["free_energy_diff"]
+                )
+
+        return cp_phi_values, cp_theta_values, free_energy_diff_values
+
+    def plot_binned_energies_against_cp_phi_and_cp_theta(self):
+
+        cp_phi_values, cp_theta_values, free_energy_values = (
+            self.sort_cp_phi_cp_theta_binned_energies_for_contour()
+        )
+
+        scatter_params = {
+            "y_label": "Theta (deg)",
+            "x_label": "Phi (deg)",
+            "countour_levels": [0.5, 1, 1.5, 2, 2.5, 3],
+        }
+
+        plot_file_path = "custom_scripts/output/cp_phi_theta_free_energy.png"
+
+        Plot().contour_plot(
+            cp_phi_values,
+            cp_theta_values,
+            free_energy_values,
+            plot_file_path,
+            scatter_params=scatter_params,
+        )

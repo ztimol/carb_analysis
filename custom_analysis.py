@@ -49,13 +49,18 @@ def calc_cp_pucker_amplitude_free_energy():
 
 
 def calc_cp_pucker_phi_theta_free_energy():
-    cp_trajectory_parameter_file = "/home/timol/C6W/Studies/structure_analysis/output/aDGlc13_aDGlc14_bDGlcNAc/ring_pucker/GlcNAc/trajectory_cp_phi_theta_Q.dat"
+    # cp_trajectory_parameter_file = "/home/timol/C6W/Studies/structure_analysis/output/aDGlc13_aDGlc14_bDGlcNAc/ring_pucker/GlcNAc/trajectory_cp_phi_theta_Q.dat"
+
+    # cp_trajectory_parameter_file = "/home/timol/C6W/Studies/structure_analysis/output/aLRha13bDGlcNAc_3_10-aDGlc14bDGlcNAc_-31_-45_attempt_2/ring_pucker/GlcNAc/trajectory_cp_phi_theta_Q.dat"
+
+    cp_trajectory_parameter_file = "/home/timol/C6W/Studies/structure_analysis/output/aLRha13_aDGlc14_bDGlcNAc_glycam/ring_pucker/GlcNAc/trajectory_cp_phi_theta_Q.dat"
 
     x = CpPuckerPhiThetaFreeEnergy()
     x.read_trjectory_cp_puckering_parameters(cp_trajectory_parameter_file)
     x.count_cp_phi_theta_by_bins()
     x.calc_free_energy_for_bins()
     x.write_phi_theta_count_free_energy()
+    x.plot_binned_energies_against_cp_phi_and_cp_theta()
 
 
 def main():
