@@ -5,10 +5,8 @@ from collections import OrderedDict
 from plot.plot import Plot
 from trajectory import Trajectory
 
-# from ring_pucker.cp_ring_pucker import CPRingPucker
 
-
-class CpPuckerEnergyPmf(Trajectory):
+class CpPuckerThetaFreeEnergy(Trajectory):
     def __init__(self):
         self.boltzmann_constant = 1.38064852e-23
         self.temp_kelvin = 300
@@ -21,9 +19,7 @@ class CpPuckerEnergyPmf(Trajectory):
         self.theta_with_min_count = {}
 
     # get cremer-pople puckering parameters from file
-    def read_trjectory_cp_puckering_parameters(self):
-
-        cp_trajectory_parameter_file = "/home/timol/C6W/Studies/structure_analysis/output/aDGlc13_aDGlc14_bDGlcNAc/ring_pucker/GlcNAc/trajectory_cp_phi_theta_Q.dat"
+    def read_trjectory_cp_puckering_parameters(self, cp_trajectory_parameter_file):
 
         cp_trajectory_pucker_params = {}
 
@@ -41,33 +37,6 @@ class CpPuckerEnergyPmf(Trajectory):
                 }
 
         self.cp_trajectory_pucker_params = cp_trajectory_pucker_params
-
-    # def count_cp_phi_and_cp_theta_by_bins(self):
-
-    #     cp_phi_and_cp_theta_bin_values = OrderedDict()
-
-    #     for phi_bin_value in range(0, 362, 2):
-    #         cp_phi_and_cp_theta_bin_values[phi_bin_value] = OrderedDict()
-    #         for theta_bin_value in range(0, 182, 2):
-    #             cp_phi_and_cp_theta_bin_values[phi_bin_value][
-    #                 theta_bin_value
-    #             ] = OrderedDict()
-    #             cp_phi_and_cp_theta_bin_values[phi_bin_value][theta_bin_value][
-    #                 "count"
-    #             ] = 0
-
-    #     for cp_params in self.cp_trajectory_pucker_params.values():
-    #         cp_phi = cp_params["cp_phi"]
-    #         cp_theta = cp_params["cp_theta"]
-    #         for phi_bin_value in range(0, 362, 2):
-    #             if phi_bin_value <= cp_phi < phi_bin_value + 2:
-    #                 for theta_bin_value in range(0, 182, 2):
-    #                     if theta_bin_value <= cp_theta < theta_bin_value + 2:
-    #                         cp_phi_and_cp_theta_bin_values[phi_bin_value][
-    #                             theta_bin_value
-    #                         ]["count"] += 1
-
-    #     self.cp_phi_and_cp_theta_bin_values = cp_phi_and_cp_theta_bin_values
 
     def count_cp_theta_by_bins(self):
 
@@ -174,7 +143,7 @@ class CpPuckerEnergyPmf(Trajectory):
             "color": "black",
         }
 
-        plot_file_path = "custom_scripts/output/pe_against_cp_theta.png"
+        plot_file_path = "custom_scripts/output/free_energy_against_cp_theta.png"
 
         Plot().two_dimensional_scatter(
             self.cp_theta_bin_values.keys(),
