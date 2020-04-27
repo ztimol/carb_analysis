@@ -147,11 +147,6 @@ class Plot:
             linewidths=2,
         )
 
-        # plt.clabel(CS, inline=1, fontsize=10)
-
-        # Recast levels to new class
-        CS.levels = [helper.nf(val) for val in CS.levels]
-
         plt.clabel(CS, CS.levels, inline=True, fmt="%r ", fontsize=8)
 
         a.set_xlabel(x_label)
