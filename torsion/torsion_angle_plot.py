@@ -16,7 +16,7 @@ class TorsionAnglePlot(Plot):
         scatter_params = {
             "y_label": y_label,
             "x_label": "time (ns)",
-            "x_major_tick": 50,
+            "x_major_tick": 200,
             "y_end": 180,
             "y_start": -180,
             "torsion_type": torsion_type,

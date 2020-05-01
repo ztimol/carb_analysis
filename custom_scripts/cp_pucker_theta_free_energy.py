@@ -121,7 +121,8 @@ class CpPuckerThetaFreeEnergy(Trajectory):
 
         for theta_bin in cp_theta_bin_values.keys():
             free_energy_diff = cp_theta_bin_values[theta_bin]["free_energy_diff"]
-            if free_energy_diff == -1:
+            count = cp_theta_bin_values[theta_bin]["count"]
+            if free_energy_diff == -1 or count < 8:
                 cp_theta_bin_values[theta_bin]["free_energy_diff"] = None  # max_energy
 
         return cp_theta_bin_values

@@ -12,7 +12,7 @@ class CPRingPuckerPlot(Plot):
         scatter_params = {
             "y_label": "Phi (deg)",
             "x_label": "time (ns)",
-            "x_major_tick": 100,
+            "x_major_tick": 200,
             "y_end": 360,
             "y_start": 0,
             "x_end": self.get_trajectory_time_in_ns(),
@@ -33,7 +33,7 @@ class CPRingPuckerPlot(Plot):
         scatter_params = {
             "y_label": "Theta (deg)",
             "x_label": "time (ns)",
-            "x_major_tick": 100,
+            "x_major_tick": 200,
             "y_end": 180,
             "y_start": 0,
             "x_end": self.get_trajectory_time_in_ns(),
@@ -82,3 +82,14 @@ class CPRingPuckerPlot(Plot):
     def histogram(self, data_list, plot_file_path, **kwargs):
         histogram_params = kwargs.get("histogram_params", {})
         super().histogram(data_list, plot_file_path, histogram_params=histogram_params)
+
+    # def cp_polar_contour_plot(
+    #     self, phi_values, theta_values, z_values, atom_selection_out_dir, atom_selection
+    # ):
+    #     plot_file_path = os.path.join(
+    #         atom_selection_out_dir, atom_selection + "_polar_contour.png"
+    #     )
+    #     self.polar_contour(phi_values, theta_values, z_values, plot_file_path)
+
+    # def polar_contour(phi_values, theta_values, z_values, out_file, **kwargs):
+    #     super.polar_scatter(phi_values, theta_values, z_values, out_file, **kwargs)

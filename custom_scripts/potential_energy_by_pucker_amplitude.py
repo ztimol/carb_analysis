@@ -98,7 +98,7 @@ class PotentialEnergyByPuckerAmplitude:
         scatter_params = {
             "y_label": "PE (kcal/mol)",
             "x_label": "CP theta (deg)",
-            "y_start": 250,
+            "y_start": 260,
             "y_end": 350,
             "x_major_tick": 30,
             "x_end": 180,

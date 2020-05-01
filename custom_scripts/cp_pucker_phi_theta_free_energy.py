@@ -176,15 +176,47 @@ class CpPuckerPhiThetaFreeEnergy(Trajectory):
         scatter_params = {
             "y_label": "Theta (deg)",
             "x_label": "Phi (deg)",
-            "countour_levels": [0.5, 1, 1.5, 2, 2.5, 3],
+            # "countour_levels": [0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6],
+            "countour_levels": [1, 2, 3, 4, 5, 6],
         }
 
-        plot_file_path = "custom_scripts/output/cp_phi_theta_free_energy.png"
+        plot_file_path = "custom_scripts/output/cp_phi_theta_free_energy_contour.png"
+        # polar_contour_plot_file_path = (
+        #     "custom_scripts/output/cp_phi_theta_free_energy_polar_contour.png"
+        # )
+
+        polar_scatter_plot_file_path = (
+            "custom_scripts/output/cp_phi_theta_free_energy_polar_scatter.png"
+        )
 
         Plot().contour_plot(
             cp_phi_values,
             cp_theta_values,
             free_energy_values,
             plot_file_path,
+            scatter_params=scatter_params,
+        )
+
+        # Plot().polar_contour(
+        #     cp_phi_values,
+        #     cp_theta_values,
+        #     free_energy_values,
+        #     polar_contour_plot_file_path,
+        #     scatter_params=scatter_params,
+        # )
+
+        cp_phi_1d_values = [
+            cp_params["cp_phi"]
+            for cp_params in self.cp_trajectory_pucker_params.values()
+        ]
+        cp_theta_1d_values = [
+            cp_params["cp_theta"]
+            for cp_params in self.cp_trajectory_pucker_params.values()
+        ]
+
+        Plot().polar_scatter(
+            cp_phi_1d_values,
+            cp_theta_1d_values,
+            polar_scatter_plot_file_path,
             scatter_params=scatter_params,
         )

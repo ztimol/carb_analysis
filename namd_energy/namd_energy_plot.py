@@ -12,7 +12,7 @@ class NAMDEnergyPlot(Plot):
         scatter_params = {
             "y_label": "Potential Energy (kcal)",
             "x_label": "time (ns)",
-            "x_major_tick": 50,
+            "x_major_tick": 200,
             # "y_end": 180,
             "y_start": 230,
             "x_end": self.get_trajectory_time_in_ns(),
