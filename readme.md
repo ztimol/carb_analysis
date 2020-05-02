@@ -1,7 +1,32 @@
 THIS README IS INCOMPLETE. INFORMATION WILL BE ADDED AND CHANGED CONTINUOUSLY.
 
-# Molecular Dynamics Structure Analysis module
+# Molecular Dynamics Structure Analysis Module
 
+## Setup
+
+This package should work on most unix based systems (Mac/Linux).
+
+To get things running python3 is required and ensure the packages listed in requirements.txt are installed.
+
+### Basic setup (for Ubuntu)
+
+* Within a terminal navigate to the directory you wish to clone the structure_analysis repo to;
+* Run: `git clone https://github.com/ztimol/structure_analysis.git`
+* Enter the cloned structure_analysis directroy: `cd structure_analysis`
+* Setup a virtual environment then install the required pip packages
+```
+sudo apt install virtualenv
+virtualenv venv -p python3
+source venv/bin/activate
+pip3 install -r requirements.txt
+```
+
+
+### Minimum Requirements
+
+* python3
+* virtualenv/conda (optional)
+* Python libraries as specified in requirements.txt
 
 ## Multiprocessing
 
