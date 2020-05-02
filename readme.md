@@ -14,7 +14,7 @@ The underlying MDAnalysis libraries do not employ multiprocessing - see the MDAn
 
 * **frames_per_ns**
   * Optional: False
-  * Acecptable value(s): numeric (integer)
+  * Acceptable value(s): numeric (integer)
   * Default value: *n/a*
   * Description: Used to calculate the trajectory length in time from the number of frames. Value must be specific in config_file.
   
@@ -24,20 +24,20 @@ The underlying MDAnalysis libraries do not employ multiprocessing - see the MDAn
   * Default value: *0*
   * Description: Used as the trajectory start point in the analysis.
   
-* dcd_file:
+* **dcd_file**:
   * Optional: False
   * Acceptable value(s): string
   * Default value: *n/a*
   * Description: Absolute or relative file path to trajectory DCD file.
     
-* psf_file:
+* **psf_file**:
   * Optional: False
   * Acceptable value(s): string
   * Default value: *n/a*
   * Description: Absolute or relative file path to structure file.
   
   
-* amber:
+* **amber**:
   * Optional: True
   * Acceptable value(s): *yes* or *no*
   * Default value: *no*
@@ -48,7 +48,7 @@ The underlying MDAnalysis libraries do not employ multiprocessing - see the MDAn
 
 Below is an example config file that does the following:
 
-* Measured the torsion angles for two sets of glycisidic linkages - phi and psi for each;
+* Measures the torsion angles for two sets of glycisidic linkages - phi and psi for each;
 * Calculates the single point potential energies for the trajectory with the NAMD Amber force field parameters enabled;
 * Calculates the Cremer-Pople ring pucker polar coordiates for two six membered rings.
 
@@ -56,17 +56,12 @@ Below is an example config file that does the following:
 start_frame 0
 frames_per_ns 40
 
-cores 4
-
-
 dcd_file /home/[user]/C6W/Studies/Dynamics/NAMD_glycam/MD/solution/general_structures/aLRha13_aDGlc14_bDGlcNAc/trajectories/aLRha13_aDGlc14_bDGlcNAc_glycam_0-1000ns.dcd
-
 psf_file /home/[user]/C6W/Studies/Dynamics/NAMD_glycam/MD/solution/general_structures/aLRha13_aDGlc14_bDGlcNAc/trajectories/1_noWAT.psf
 
 amber yes
 
 parm7_file /home/[user]/C6W/Studies/Dynamics/NAMD_glycam/MD/solution/general_structures/aLRha13_aDGlc14_bDGlcNAc/trajectories/1_noWAT.parm7
-
 rst7_file /home/[user]/C6W/Studies/Dynamics/NAMD_glycam/MD/solution/general_structures/aLRha13_aDGlc14_bDGlcNAc/trajectories/1_noWAT.rst7
 
 torsion aLRha13bDGlcNAc phi "51 50 27 15"
