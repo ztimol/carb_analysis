@@ -71,3 +71,11 @@ def convert_frames_to_ns(num_frames, frames_per_ns):
 def get_output_dir_name_from_config_file_args(config_file_args):
     file_name = config_file_args.split("/")[-1]
     return file_name.split(".")[0]
+
+
+def split_list_into_segments(list_to_split, number_of_segments):
+    k, m = divmod(len(list_to_split), number_of_segments)
+    return [
+        list_to_split[i * k + min(i, m) : (i + 1) * k + min(i + 1, m)]
+        for i in range(number_of_segments)
+    ]

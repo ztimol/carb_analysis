@@ -130,7 +130,10 @@ class Config:
             return False
 
     def get_start_frame(self):
-        return int(self.env["start_frame"])
+        try:
+            return int(self.env["start_frame"])
+        except KeyError:
+            return 0
 
     # trajectory frames per nanoseconds
     def get_frames_per_ns(self):

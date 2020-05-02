@@ -41,9 +41,11 @@ class CPRingPucker(CPRingPuckerPlot, Trajectory):
 
     def _calc_cremer_pople_ring_values_per_frame(self, ring_pucker_atom_selection):
 
+        frames_to_analyses = self.mda_universe.trajectory[self.get_start_frame() :]
+
         trajectory_cp_pucker_values = {}
 
-        for frame in self.mda_universe.trajectory:
+        for frame in frames_to_analyses:
             ring_center_of_geo = self.mda_universe.select_atoms(
                 ring_pucker_atom_selection
             ).center_of_geometry()
