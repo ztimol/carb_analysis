@@ -1,7 +1,11 @@
+THIS README IS INCOMPLETE. INFORMATION WILL BE ADDED AND CHANGED CONTINUOUSLY.
+
 # Molecular Dynamics Structure Analysis module
 
 
+## Multiprocessing
 
+The underlying MDAnalysis libraries do not employ multiprocessing - see the MDAnalysis docs. The way trajectories are handled by MDAnalysis also do not make implementing multiprocessing on top of it trivial. There is a good reason for this - again google and the MDAnalysis docs provide more information.
 
 
 ## Config file 
