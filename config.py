@@ -1,5 +1,6 @@
 import os
 from helper import is_whole_string_comment, is_empty_string, clean_string
+from constants import ALLOWED_CONFIG_MEASURE_TYPES
 
 
 class Config:
@@ -18,33 +19,58 @@ class Config:
 
     def _read_config_params_from_file(self, config_file):
 
-        config_params = {}
+        config_params = {"measure": {}}
         with (open(config_file, "r")) as infile:
             for line in infile:
                 if not is_whole_string_comment(line) and not is_empty_string(line):
                     cleaned_line = clean_string(line)
                     field_name = cleaned_line.split()[0]
-                    if field_name == "torsion":
-                        config_params = self._handle_torsion_field(
-                            cleaned_line, config_params
-                        )
-                    elif field_name == "namd_energy":
-                        config_params = self._handle_namd_energy_field(
-                            cleaned_line, config_params
-                        )
-                    elif field_name == "ring_pucker":
-                        config_params = self._handle_ring_pucker_field(
-                            cleaned_line, config_params
-                        )
-                    elif field_name == "atom_distance":
-                        config_params = self._handle_atom_distance_field(
-                            cleaned_line, config_params
+                    if field_name == "measure":
+                        config_params["measure"] = self._handle_measure_field(
+                            cleaned_line, config_params["measure"]
                         )
                     elif field_name == "frames_per_ns":
                         config_params[field_name] = eval(line.split()[1])
                     else:
                         config_params[field_name] = cleaned_line.split()[1]
         return config_params
+
+    def _handle_measure_field(self, line, measure_params):
+
+        measure_type = line.split()[1].strip()
+
+        if measure_type == "torsion":
+            torsion_params = self._get_measure_type_params(measure_params, "torsion")
+            return self._handle_torsion_field(line, torsion_params)
+        elif measure_type == "namd_energy":
+            namd_energy_params = self._get_measure_type_params(
+                measure_params, "namd_energy"
+            )
+            return self._handle_namd_energy_field(line, namd_energy_params)
+        elif measure_type == "ring_pucker":
+            ring_pucker_params = self._get_measure_type_params(
+                measure_params, "ring_pucker"
+            )
+            return self._handle_ring_pucker_field(line, ring_pucker_params)
+        elif measure_type == "atom_distance":
+            atom_distance_params = self._get_measure_type_params(
+                measure_params, "atom_distance"
+            )
+            return self._handle_atom_distance_field(line, atom_distance_params)
+
+    def _get_measure_type_params(self, measure_params, measure_type):
+
+        assert (
+            measure_type in ALLOWED_CONFIG_MEASURE_TYPES
+        ), "'{measure_type}' is not a valid measure command.".format(
+            measure_type=measure_type
+        )
+
+        try:
+            return measure_params[measure_type]
+        except KeyError:
+            measure_params[measure_type] = {}
+            return measure_params[measure_type]
 
     def _check_if_config_file_exists(self, config_file):
         if os.path.isfile(config_file):
