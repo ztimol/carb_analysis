@@ -28,6 +28,13 @@ pip3 install -r requirements.txt
 * virtualenv/conda (optional)
 * Python libraries as specified in requirements.txt
 
+## Running the script
+
+The entrypoint script is base.py. The path to the config file is a required flag:
+
+`python3 base.py -f config_files/example_run.conf`
+
+
 ## Multiprocessing
 
 The underlying MDAnalysis libraries do not employ multiprocessing - see the MDAnalysis docs. The way trajectories are handled by MDAnalysis also do not make implementing multiprocessing on top of it trivial. There is a good reason for this - again google and the MDAnalysis docs provide more information.
