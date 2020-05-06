@@ -109,3 +109,8 @@ namd_energy trisaccharide_PE potential_energy
 ring_pucker GlcNAc "resid 2 and name O5 C1 C2 C3 C4 C5"
 ring_pucker Glc "resid 3 and name O5 C1 C2 C3 C4 C5"
 ```
+
+
+## 5) Known Bugs
+
+* Cannot run two or simulataneous simulations with namd_energy calc enabled.
