@@ -2,13 +2,13 @@ THIS README IS INCOMPLETE. INFORMATION WILL BE ADDED AND CHANGED CONTINUOUSLY.
 
 # Molecular Dynamics Structure Analysis Module
 
-## Setup
+## 1) Setup
 
 This package should work on most unix based systems (Mac/Linux).
 
 To get things running python3 is required and ensure the packages listed in requirements.txt are installed.
 
-### Basic setup (for Ubuntu)
+### 1.1) Basic setup (for Ubuntu)
 
 * Within a terminal navigate to the directory you wish to clone the structure_analysis repo to;
 * Run: `git clone https://github.com/ztimol/structure_analysis.git`
@@ -21,22 +21,28 @@ source venv/bin/activate
 pip3 install -r requirements.txt
 ```
 
-
-### Minimum Requirements
+### 1.2) Minimum Requirements
 
 * python3
 * virtualenv/conda (optional)
 * Python libraries as specified in requirements.txt
 
-## Multiprocessing
+## 2) Running the script
+
+The entrypoint script is base.py. The path to the config file is a required flag:
+
+`python3 base.py -f config_files/example_run.conf`
+
+
+## 3) Multiprocessing
 
 The underlying MDAnalysis libraries do not employ multiprocessing - see the MDAnalysis docs. The way trajectories are handled by MDAnalysis also do not make implementing multiprocessing on top of it trivial. There is a good reason for this - again google and the MDAnalysis docs provide more information.
 
 
-## Config file 
+## 4) Config file 
 
-### Config Parameters
-
+### 4.1) Config Parameters
+ALL CONFIG FILE PARAMETERS ARE STILL TO BE LISTED HERE.
 * **frames_per_ns**
   * Optional: False
   * Acceptable value(s): numeric (integer)
@@ -69,7 +75,7 @@ The underlying MDAnalysis libraries do not employ multiprocessing - see the MDAn
   * Description: Absolute or relative file path to structure file.
   
  
-### Config file example
+### 4.2) Config file example
 
 Below is an example config file that does the following:
 
@@ -103,3 +109,8 @@ namd_energy trisaccharide_PE potential_energy
 ring_pucker GlcNAc "resid 2 and name O5 C1 C2 C3 C4 C5"
 ring_pucker Glc "resid 3 and name O5 C1 C2 C3 C4 C5"
 ```
+
+
+## 5) Known Bugs
+
+* Cannot run two or simulataneous simulations with namd_energy calc enabled.
