@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
-from matplotlib.ticker import PercentFormatter
+from mpl_toolkits.mplot3d import Axes3D
+from matplotlib.ticker import PercentFormatter, MaxNLocator
 from matplotlib import cm
 import numpy as np
 import scipy
@@ -150,8 +151,8 @@ class Plot:
         plt.ylabel(y_label)
         plt.gca().yaxis.set_major_formatter(PercentFormatter(1))
         plt.xlabel(x_label)
-        # plt.xlim([0, 10])
-        # plt.ylim([0, 0.05])
+        plt.xlim([x_start, x_end])
+        plt.ylim([y_start, y_end])
         ax.xaxis.set_ticks(np.arange(x_start, x_end + x_major_tick, x_major_tick))
         # ax.yaxis.set_ticks(np.arange(y_start, 0.06, 0.01))
 
@@ -197,17 +198,9 @@ class Plot:
             z_variables, sigma=1
         )  # bigger sigma = more smoothing; can go <1
 
-        # a.contourf(
-        #     x_variables,
-        #     y_variables,
-        #     smoothed_z_variables,
-        #     # countour_levels,
-        #     cmap=cm.gray,
-        #     # linewidths=2,
-        # )
+        # cf = a.contourf(x_variables, y_variables, smoothed_z_variables, cmap=cm.gray)
 
-        # plt.pcolormesh(x_variables, y_variables, smoothed_z_variables)
-        # plt.colorbar()
+        # plt.colorbar(cf, ax=a)
 
         CS = a.contour(
             x_variables,
@@ -269,5 +262,40 @@ class Plot:
         ax.set_theta_direction(-1)
         ax.set_rlim(top=180, bottom=0)
         ax.scatter(phi, theta, c=theta, s=1, cmap="hsv", alpha=0.75)
+
+        fig.savefig(out_file, dpi=400, format="png")
+
+    def polar_scatter_heatmap(
+        self, phi_values, theta_values, count_values, out_file, **kwargs
+    ):
+
+        scatter_params = kwargs.get("scatter_params", {})
+
+        smoothed_count_values = scipy.ndimage.gaussian_filter(
+            count_values, sigma=1
+        )  # bigger sigma = more smoothing; can go <1
+
+        # count_values = np.array(count_values)  # [:-1, :-1]
+        # levels = MaxNLocator(nbins=30).tick_values(
+        #     count_values.min(), count_values.max()
+        # )
+        levels = range(0, 50)
+
+        cmap = plt.get_cmap("Reds")
+
+        fig = plt.figure()
+        ax = fig.add_subplot(111, projection="polar")
+        ax.set_theta_zero_location("N")
+        ax.set_theta_direction(-1)
+        ax.set_rlim(top=180, bottom=0)
+
+        cf = ax.contourf(
+            np.array(phi_values),  # [:-1, :-1] + 2 / 2.0,
+            np.array(theta_values),  # [:-1, :-1] + 2 / 2.0,
+            count_values,
+            levels=levels,
+            cmap=cmap,
+        )
+        fig.colorbar(cf)
 
         fig.savefig(out_file, dpi=400, format="png")

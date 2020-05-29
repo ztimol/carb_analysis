@@ -40,22 +40,23 @@ class SinglePointEnergy:
 
         scatter_params = {
             "y_label": "PE (kcal/mol)",
-            "x_label": "CP theta (deg)",
+            "x_label": "time (ns)",
             "y_start": 230,
             "y_end": 310,
             "x_major_tick": 200,
-            "x_end": 1500,
+            "x_end": 2000,
             "color": "black",
         }
 
         plot_file_path = "custom_scripts/output/trajectory_single_point_potential_energy_with_average.png"
 
-        time_series = np.arange(0, 1500, 1500 / 60000)
+        # time_series = np.arange(0, 1500, 1500 / 60000)
+        time_series = np.arange(0, 2000, 2000 / 80000)
 
         Plot().two_dimensional_scatter_plot_with_average(
             time_series,
             self.trajectory_pe_values,
-            np.arange(12.5, 1500, 25),
+            np.arange(12.5, 2000, 25),
             self.pe_periodic_mean_values,
             plot_file_path,
             scatter_params=scatter_params,
