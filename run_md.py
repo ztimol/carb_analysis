@@ -29,8 +29,8 @@ def create_em_conf_file_from_template(em_dir, structure_name):
         current_dir, "templates", "namd", "em_template.conf"
     )
 
-    psf_file_relative_path = "../structure/" + structure_name + ".psf"
-    pdb_file_relative_path = "../structure/" + structure_name + ".pdb"
+    psf_file_relative_path = "../structures/" + structure_name + ".psf"
+    pdb_file_relative_path = "../structures/" + structure_name + ".pdb"
 
     namd_em_conf_file_path = os.path.join(em_dir, "em.conf")
 
@@ -52,7 +52,7 @@ def _do_em(em_dir):
 
     namd_energy_calc_command = [
         "/home/timol/.NAMD_2.13_Linux-x86_64-multicore/namd2",
-        "+p4",
+        "+p8",
         conf_file_path,
     ]
 
@@ -65,6 +65,10 @@ def energy_minimisation(base_dir, structure_name):
 
     setup_files_dir = os.path.join(base_dir, "setup_files")
     em_dir = os.path.join(setup_files_dir, "em")
+
+    if not os.path.exists(em_dir):
+        os.mkdir(em_dir)
+
     # structure_dir = os.path.join(setup_files_dir, "structure")
 
     create_em_conf_file_from_template(em_dir, structure_name)
@@ -85,11 +89,11 @@ def create_solvation_file_from_template(solvation_dir, structure_name):
 
     solvation_script_file_path = os.path.join(solvation_dir, "solvate.tcl")
 
-    psf_file_relative_path = "../structure/" + structure_name + ".psf"
+    psf_file_relative_path = "../structures/" + structure_name + ".psf"
     pdb_file_relative_path = "../em/run_output/em.pdb"
 
-    MIN = "-13.5"
-    MAX = "13.5"
+    MIN = "-30"
+    MAX = "30"
 
     with open(solvate_template_file_path, "r") as solvation_template:
         x = solvation_template.read()
@@ -127,15 +131,18 @@ def solvate_minimised_structure(base_dir, structure_name):
     setup_files_dir = os.path.join(base_dir, "setup_files")
     solvation_dir = os.path.join(setup_files_dir, "solvated")
 
+    if not os.path.exists(solvation_dir):
+        os.mkdir(solvation_dir)
+
     create_solvation_file_from_template(solvation_dir, structure_name)
     _do_solvation(solvation_dir)
 
 
 def main():
 
-    base_dir = "/home/timol/C6W/Studies/Dynamics/NAMD_plumed/MD/solution/PMF/pucker/aDGlc13_aDGlc14_bDGlcNAc/simulations/"
+    base_dir = "/home/timol/C6W/Studies/Dynamics/NAMD/Shigella/MD/Solution/7b_s_flexneri/7b_s_flexneri_3ru/simulations/"
 
-    structure_name = "aDGlc13_aDGlc14_bDGlcNAc"
+    structure_name = "7b_s_flexneri_3ru"
 
     energy_minimisation(base_dir, structure_name)
     solvate_minimised_structure(base_dir, structure_name)

@@ -5,6 +5,7 @@ from torsion.torsion_angle import TorsionAngle
 from atom_distance.atom_distance import AtomDistance
 from namd_energy.namd_energy import NAMDEnergy
 from ring_pucker.cp_ring_pucker import CPRingPucker
+from block_average.block_average import BlockAverage
 
 
 class Analysis(Trajectory):
@@ -79,6 +80,27 @@ class Analysis(Trajectory):
         ring_pucker.cp_ring_pucker_analysis()
 
         print("Completed puckering parameter calculations.")
+        print()
+
+    def block_average_analysis(self):
+
+        try:
+            if self.env["block_average"]:
+                block_average_dir = os.path.join(self.output_dir, "block_average")
+                if not os.path.exists(block_average_dir):
+                    os.mkdir(block_average_dir)
+        except KeyError:
+            print(
+                "No block average params specified in config file. Will not perform block average analysis.\n"
+            )
+            return
+
+        print("Commencing block average calculations...")
+
+        block_average = BlockAverage(self.env, self.mda_universe, block_average_dir)
+        block_average.block_average_analysis()
+
+        print("Completed block average calculations.")
         print()
 
     def distance_analysis(self):

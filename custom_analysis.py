@@ -1,6 +1,7 @@
 from custom_scripts.potential_energy_by_pucker_amplitude import (
     PotentialEnergyByPuckerAmplitude,
 )
+
 from custom_scripts.cp_pucker_theta_free_energy import CpPuckerThetaFreeEnergy
 from custom_scripts.cp_pucker_phi_theta_free_energy import CpPuckerPhiThetaFreeEnergy
 from custom_scripts.cp_plots import CpPlots
@@ -58,12 +59,16 @@ def calc_cp_pucker_amplitude_free_energy():
 def calc_cp_pucker_phi_theta_free_energy():
     # cp_trajectory_parameter_file = "/home/timol/C6W/Studies/structure_analysis/output/aDGlc13_aDGlc14_bDGlcNAc/ring_pucker/GlcNAc/trajectory_cp_phi_theta_Q.dat"
 
-    cp_trajectory_parameter_file = "/home/timol/C6W/Studies/structure_analysis/custom_scripts/plumed/colvar_pucker.dat"
+    # cp_trajectory_parameter_file = "/home/timol/C6W/Studies/structure_analysis/output/aDGlc13_aDGlc14_bDGlcNAc_glycam/ring_pucker/GlcNAc/trajectory_cp_phi_theta_Q.dat"
 
-    # cp_trajectory_parameter_file = "/home/timol/C6W/Studies/structure_analysis/output/aLRha13_aDGlc14_bDGlcNAc_glycam/ring_pucker/GlcNAc/trajectory_cp_phi_theta_Q.dat"
+    cp_phi_theta_count_file = ""
 
-    x = CpPuckerPhiThetaFreeEnergy()
-    x.read_trjectory_cp_puckering_parameters(cp_trajectory_parameter_file)
+    cp_trajectory_parameter_file = "/home/timol/C6W/Studies/structure_analysis/output/aDGlc13_aDGlc14_bDGlcNAc_glycam/ring_pucker/GlcNAc/trajectory_cp_phi_theta_Q.dat"
+
+    x = CpPuckerPhiThetaFreeEnergy(
+        cp_trajectory_parameter_file, cp_phi_theta_count_file
+    )
+    x.read_trjectory_cp_puckering_parameters()
     x.count_cp_phi_theta_by_bins()
     x.calc_free_energy_for_bins()
     x.write_phi_theta_count_free_energy()

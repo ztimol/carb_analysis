@@ -3,5 +3,6 @@ scipy
 argparse
 statistics
 pandas
-mdanalysis==0.20.1
+mdanalysis
+#mdanalysis==1.0.0 #0.20.1
 

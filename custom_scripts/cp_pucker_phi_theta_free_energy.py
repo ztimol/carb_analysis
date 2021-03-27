@@ -7,7 +7,10 @@ from trajectory import Trajectory
 
 
 class CpPuckerPhiThetaFreeEnergy(Trajectory):
-    def __init__(self):
+    def __init__(self, cp_trajectory_parameter_file, cp_phi_theta_count_file):
+        print(cp_trajectory_parameter_file)
+        self.cp_trajectory_parameter_file = cp_trajectory_parameter_file
+        self.cp_phi_theta_count_file = cp_phi_theta_count_file
         self.boltzmann_constant = 1.38064852e-23
         self.temp_kelvin = 300
         self.avogradros_constant = 6.02214086e23
@@ -18,12 +21,11 @@ class CpPuckerPhiThetaFreeEnergy(Trajectory):
         self.phi_theta_with_min_count = {}
 
     # get cremer-pople puckering parameters from file
-    def read_trjectory_cp_puckering_parameters(self, cp_trajectory_parameter_file):
+    def read_trjectory_cp_puckering_parameters(self):
 
         cp_trajectory_pucker_params = OrderedDict()
-        import math
 
-        with open(cp_trajectory_parameter_file, "r") as infile:
+        with open(self.cp_trajectory_parameter_file, "r") as infile:
             for line in infile:
                 line = line.split()
                 frame_number = eval(line[0])
@@ -31,12 +33,7 @@ class CpPuckerPhiThetaFreeEnergy(Trajectory):
                 cp_theta = eval(line[2])
                 cp_q = eval(line[3])
 
-                # plumed
-                time = eval(line[0])
-                cp_phi = (eval(line[4]) * 180) / math.pi
-                cp_theta = (eval(line[5]) * 180) / math.pi
-                cp_q = eval(line[6])
-                cp_trajectory_pucker_params[time] = {
+                cp_trajectory_pucker_params[frame_number] = {
                     "cp_phi": cp_phi,
                     "cp_theta": cp_theta,
                     "cp_q": cp_q,
@@ -48,19 +45,19 @@ class CpPuckerPhiThetaFreeEnergy(Trajectory):
 
         cp_phi_theta_bin_values = OrderedDict()
 
-        for phi_bin_value in range(0, 362, 2):
+        for phi_bin_value in range(0, 361, 1):
             cp_phi_theta_bin_values[phi_bin_value] = OrderedDict()
-            for theta_bin_value in range(0, 182, 2):
+            for theta_bin_value in range(0, 181, 1):
                 cp_phi_theta_bin_values[phi_bin_value][theta_bin_value] = {}
                 cp_phi_theta_bin_values[phi_bin_value][theta_bin_value]["count"] = 0
 
         for frame_number, cp_params in self.cp_trajectory_pucker_params.items():
             cp_phi = cp_params["cp_phi"]
             cp_theta = cp_params["cp_theta"]
-            for phi_bin_value in range(0, 362, 2):
-                if phi_bin_value <= cp_phi < phi_bin_value + 2:
-                    for theta_bin_value in range(0, 182, 2):
-                        if theta_bin_value <= cp_theta < theta_bin_value + 2:
+            for phi_bin_value in range(0, 361, 1):
+                if phi_bin_value <= cp_phi < phi_bin_value + 1:
+                    for theta_bin_value in range(0, 181, 1):
+                        if theta_bin_value <= cp_theta < theta_bin_value + 1:
                             cp_phi_theta_bin_values[phi_bin_value][theta_bin_value][
                                 "count"
                             ] += 1
@@ -120,7 +117,7 @@ class CpPuckerPhiThetaFreeEnergy(Trajectory):
 
         self.phi_theta_with_max_count = phi_theta_with_max_count
         self.phi_theta_with_min_count = phi_theta_with_min_count
-        print(self.phi_theta_with_max_count)
+        # print(self.phi_theta_with_max_count)
 
     def write_phi_theta_count_free_energy(self):
 
@@ -190,8 +187,8 @@ class CpPuckerPhiThetaFreeEnergy(Trajectory):
         ) = self.sort_cp_phi_cp_theta_binned_energies_for_contour()
 
         scatter_params = {
-            "y_label": "Theta (deg)",
-            "x_label": "Phi (deg)",
+            "x_label": r"$\phi$",
+            "y_label": r"$\theta$",
             "countour_levels": range(0, 6, 1),
         }
 
@@ -202,6 +199,33 @@ class CpPuckerPhiThetaFreeEnergy(Trajectory):
             cp_theta_values,
             free_energy_values,
             plot_file_path,
+            scatter_params=scatter_params,
+        )
+
+        scatter_params = {
+            "x_label": r"$\phi$",
+            "y_label": r"$\theta$",
+            "x_major_tick": 60,
+            "x_end": 360,
+            "x_start": 0,
+            "y_end": 180,
+            "y_start": 0,
+        }
+
+        cp_phi_1d_values = [
+            cp_params["cp_phi"]
+            for cp_params in self.cp_trajectory_pucker_params.values()
+        ]
+
+        cp_theta_1d_values = [
+            cp_params["cp_theta"]
+            for cp_params in self.cp_trajectory_pucker_params.values()
+        ]
+
+        Plot().two_dimensional_scatter(
+            cp_phi_1d_values,
+            cp_theta_1d_values,
+            "custom_scripts/output/cp_phi_theta_scatter.png",
             scatter_params=scatter_params,
         )
 
@@ -225,14 +249,55 @@ class CpPuckerPhiThetaFreeEnergy(Trajectory):
         #     scatter_params=scatter_params,
         # )
 
-        polar_scatter_heatmap_file_path = (
-            "custom_scripts/output/cp_phi_theta_count_heatmap.png"
-        )
+        # polar_scatter_heatmap_file_path = (
+        #     "custom_scripts/output/cp_phi_theta_count_heatmap.png"
+        # )
 
-        Plot().polar_scatter_heatmap(
-            cp_phi_values,
-            cp_theta_values,
-            count_values,
-            polar_scatter_heatmap_file_path,
-            scatter_params=scatter_params,
-        )
+        # # process PMF file into 2D arrays
+
+        # x = []
+        # y = []
+        # z = []
+        # max_z = 0
+        # with open(self.cp_phi_theta_count_file) as f:
+        #     lines = f.readlines()
+        #     xline = []
+        #     yline = []
+        #     zline = []
+        #     for line in lines:
+        #         line = line.strip()
+        #         tmp = line.split()
+        #         if len(tmp) and line[0] != "#" and len(line) >= 3:
+        #             # print("Line is:'", tmp)
+        #             nextX = float(line.split()[0])
+        #             if xline and (xline[-1] != nextX):  # end of row
+        #                 x.append(xline)
+        #                 y.append(yline)
+        #                 z.append(zline)
+        #                 xline = []
+        #                 yline = []
+        #                 zline = []
+        #             nextY = float(line.split()[1])
+        #             nextZ = float(line.split()[2])
+
+        #             xline.append(nextX)
+        #             yline.append(nextY)
+        #             zline.append(nextZ)
+        #             if nextZ > max_z:
+        #                 max_z = nextZ
+
+        #     x.append(xline)  # do last append
+        #     y.append(yline)
+        #     z.append(zline)
+
+        # print(f"Highest Level: {max_z}")
+
+        # Plot().polar_scatter_heatmap(
+        #     # cp_phi_1d_values,
+        #     # cp_theta_1d_values,
+        #     x,
+        #     y,
+        #     z,
+        #     polar_scatter_heatmap_file_path,
+        #     scatter_params=scatter_params,
+        # )

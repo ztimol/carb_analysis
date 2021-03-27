@@ -34,8 +34,8 @@ class Plot:
         plt.scatter(x_values, y_values, s=5, color=color)
 
         ax.xaxis.set_ticks(np.arange(x_start, x_end + x_major_tick, x_major_tick))
-        plt.xlabel(x_label)
-        plt.ylabel(y_label)
+        plt.xlabel(x_label, fontsize=20)
+        plt.ylabel(y_label, fontsize=20)
         plt.xlim([x_start, x_end])
         plt.ylim([y_start, y_end])
         ax.tick_params(axis="x")
@@ -190,7 +190,7 @@ class Plot:
         countour_levels = scatter_params.get("countour_levels")
 
         if not countour_levels:
-            countour_levels = range(0, 16)  # levels to draw contours at
+            countour_levels = range(1, 11)  # levels to draw contours at
 
         fig = plt.figure()
         a = fig.add_subplot(1, 1, 1)
@@ -198,23 +198,19 @@ class Plot:
             z_variables, sigma=1
         )  # bigger sigma = more smoothing; can go <1
 
-        # cf = a.contourf(x_variables, y_variables, smoothed_z_variables, cmap=cm.gray)
-
-        # plt.colorbar(cf, ax=a)
-
         CS = a.contour(
             x_variables,
             y_variables,
             smoothed_z_variables,
             countour_levels,
-            cmap=cm.gray,
+            cmap=cm.copper_r,
             linewidths=2,
         )
 
         plt.clabel(CS, CS.levels, inline=True, fmt="%r ", fontsize=8)
 
-        a.set_xlabel(x_label)
-        a.set_ylabel(y_label)
+        a.set_xlabel(x_label, fontsize=20)
+        a.set_ylabel(y_label, fontsize=20)
         a.set_xticks((0, 60, 120, 180, 240, 300, 360))
         a.set_yticks((0, 30, 90, 60, 120, 150, 180))
         a.tick_params(axis="both", labelsize=10)
@@ -279,9 +275,9 @@ class Plot:
         # levels = MaxNLocator(nbins=30).tick_values(
         #     count_values.min(), count_values.max()
         # )
-        levels = range(0, 50)
+        levels = range(0, 100)
 
-        cmap = plt.get_cmap("Reds")
+        cmap = plt.get_cmap("bone_r")
 
         fig = plt.figure()
         ax = fig.add_subplot(111, projection="polar")
@@ -292,10 +288,19 @@ class Plot:
         cf = ax.contourf(
             np.array(phi_values),  # [:-1, :-1] + 2 / 2.0,
             np.array(theta_values),  # [:-1, :-1] + 2 / 2.0,
-            count_values,
+            np.array(count_values),
             levels=levels,
             cmap=cmap,
+            extend="max"
+            # norm=cm.colors.Normalize(),
         )
+
+        # heatmap = np.histogram2d(phi_values, theta_values, bins=(360, 180))
+        # extent = (0, 360, 0, 180)
+
+        # plt.clf()
+
+        # plt.imshow(heatmap[0].T, extent=extent, origin="lower")
         fig.colorbar(cf)
 
         fig.savefig(out_file, dpi=400, format="png")

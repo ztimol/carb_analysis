@@ -4,7 +4,7 @@ import scipy.ndimage
 import helper
 
 
-def scatter_with_pmf_contour(pmf_file, xList, yList):
+def scatter_with_pmf_contour(pmf_file, xList=[], yList=[]):
     """Plot single PMF and output pdf
     """
     x = []
@@ -42,26 +42,9 @@ def scatter_with_pmf_contour(pmf_file, xList, yList):
     fig = plt.figure()
     a = fig.add_subplot(1, 1, 1)
 
-    levs = [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10,
-        11,
-        12,
-        13,
-        14,
-        15,
-        16,
-    ]  # levels to draw contours at
+    levs = range(1, 16)  # levels to draw contours at
 
-    CS = a.contour(x, y, z, levs, cmap=cm.binary, linewidths=2)
+    CS = a.contour(x, y, z, levs, cmap=cm.coolwarm)
     # plt.clabel(CS, inline=1, fontsize=10)
 
     # Recast levels to new class
@@ -69,7 +52,8 @@ def scatter_with_pmf_contour(pmf_file, xList, yList):
 
     plt.clabel(CS, CS.levels, inline=True, fmt="%r ", fontsize=8)
 
-    plt.scatter(xList, yList, s=5, color="g")
+    if xList and yList:
+        plt.scatter(xList, yList, s=5, color="g")
 
     a.set_xlabel("$\phi$", fontsize=20)
     a.set_ylabel("$\psi$", fontsize=20)
@@ -77,27 +61,27 @@ def scatter_with_pmf_contour(pmf_file, xList, yList):
     a.set_yticks((-120, -60, 0, 60, 120))
     a.tick_params(axis="both", labelsize=10)
 
-    fig.savefig("out_multiplot.png", dpi=800, format="png")
+    fig.savefig("out_multiplot.png", dpi=400, format="png")
 
     plt.close()
 
 
-def scatter_without_pmf_contour(xList, yList, outfile_name, x_key, y_key):
+# def scatter_without_pmf_contour(xList, yList, outfile_name, x_key, y_key):
 
-    # plt.scatter(xList, yList, s=5, color="g")
+#     # plt.scatter(xList, yList, s=5, color="g")
 
-    # a.set_xlabel("$\phi$", fontsize=20)
-    # a.set_ylabel("$\psi$", fontsize=20)
-    # a.set_xticks((-120, -60, 0, 60, 120))
-    # a.set_yticks((-120, -60, 0, 60, 120))
-    # a.tick_params(axis="both", labelsize=10)
+#     # a.set_xlabel("$\phi$", fontsize=20)
+#     # a.set_ylabel("$\psi$", fontsize=20)
+#     # a.set_xticks((-120, -60, 0, 60, 120))
+#     # a.set_yticks((-120, -60, 0, 60, 120))
+#     # a.tick_params(axis="both", labelsize=10)
 
-    plt.scatter(xList, yList, s=5, color="g")
-    plt.xlabel("$\\" + x_key + "$", fontsize=20)
-    plt.ylabel("$\\" + y_key + "$", fontsize=20)
-    # plt.ylabel("$\psi$", fontsize=20)
-    # plt.show()
+#     plt.scatter(xList, yList, s=5, color="g")
+#     plt.xlabel("$\\" + x_key + "$", fontsize=20)
+#     plt.ylabel("$\\" + y_key + "$", fontsize=20)
+#     # plt.ylabel("$\psi$", fontsize=20)
+#     # plt.show()
 
-    plt.savefig(outfile_name + ".png", dpi=800, format="png")
+#     plt.savefig(outfile_name + ".png", dpi=800, format="png")
 
-    plt.close()
+#     plt.close()

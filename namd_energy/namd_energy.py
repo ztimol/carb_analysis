@@ -63,7 +63,7 @@ class NAMDEnergy(NAMDEnergyPlot, Trajectory):
 
         namd_energy_calc_command = [
             self.env["namd_path"],
-            "+p2",
+            "+p8",
             "./namd_energy/md_energy.conf",
         ]
 

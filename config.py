@@ -36,6 +36,10 @@ class Config:
                         config_params = self._handle_ring_pucker_field(
                             cleaned_line, config_params
                         )
+                    elif field_name == "block_average":
+                        config_params[field_name] = self._handle_block_average_field(
+                            cleaned_line, config_params
+                        )
                     elif field_name == "atom_distance":
                         config_params = self._handle_atom_distance_field(
                             cleaned_line, config_params
@@ -177,6 +181,26 @@ class Config:
         ].strip()[1:-1]
         ring_pucker_params[ring_pucker_name] = ring_pucker_selection
         return ring_pucker_params
+
+    def _handle_block_average_field(self, cleaned_line, config_params):
+        try:
+            config_params["block_averages"] = self._get_block_average_params(
+                cleaned_line, config_params["block_averages"]
+            )
+        except KeyError:
+            config_params["block_averages"] = {}
+            config_params["block_averages"] = self._get_ring_pucker_params(
+                cleaned_line, config_params["block_averages"]
+            )
+        return config_params
+
+    def _get_block_average_params(self, line, block_average_params):
+        block_average_name = line.split()[1].strip()
+        block_average_selection = line[
+            line.find(block_average_name) + len(block_average_name) :
+        ].strip()[1:-1]
+        block_average_params[block_average_name] = block_average_selection
+        return block_average_params
 
     def _handle_atom_distance_field(self, cleaned_line, config_params):
         try:

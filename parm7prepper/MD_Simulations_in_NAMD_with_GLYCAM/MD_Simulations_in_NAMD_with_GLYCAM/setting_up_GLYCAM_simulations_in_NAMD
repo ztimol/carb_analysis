@@ -1,0 +1,49 @@
+#---- How to set up MD simulations in NAMD using glycam ----#
+# By Ryan Lazar (LZRRYA001) November 2019
+#---------
+1. Build the molecule 
+
+Go to glycam.org, click on the Carbohydrate builder tool.
+Build the structure. Click done.
+Under options click Solvate Structures.
+	Select yes and set the solvent box shape to cubic. Reduce the minimum distance between center of solute atom and solvent atom to 0.5 to better match VMD's solvate plugin.
+Glycam Web will minimize and solvate the structure. 
+Select download all structures. 
+
+#---------
+
+2. Fix the files
+
+As part of the download you will have 1.parm7, 1.rst7, 1.pdb and 1_noWAT.parm7, 1_noWAT.rst7 and 1_noWAT.pdb. We will only use these. 
+Rename the files using some convention. I use toppar and coor prefix for the .parm7 and rst7 files respectively. Followed by molecule name and MIN suffix. I also append solvated structures with H2O. 
+	e.g.	1.parm7 => toppar_aLRha1-2aLRha_GLY_MIN_H2O.parm7
+			1.rst7 => coor_aLRha1-2aLRha_GLY_MIN_H2O.rst7
+			1.pdb => aLRha1-2aLRha_GLY_MIN_H2O.pdb
+
+			1_noWAT.parm7 => toppar_aLRha1-2aLRha_GLY_MIN.parm7
+			1_noWAT.rst7 => coor_aLRha1-2aLRha_GLY_MIN.rst7
+			1_noWAT.pdb => aLRha1-2aLRha_GLY_MIN_H2O.pdb
+
+Fix ordering of solvated parm7 file (e.g. toppar_aLRha1-2aLRha_GLY_MIN_H2O.parm7) using Parm7Prepper (download at https://bitbucket.org/LZRRYA001/parm7prepper/src/master/, see instructions on how to run there). 
+
+Once Parm7Prepper has produced reordered.parm7 file delete old parm7 and rename. 
+
+#---------
+
+3. Configure simulation
+
+See runEQ.conf and run1.conf (restart file). 
+
+Change file names to match input files generated in step two. 
+Fix PBC basis vectors and cell origin.
+	In VMD, load the .parm7 file of the solvated structure. Then load the corresponding rst7 file. 
+	In tk concole
+		measure minmax $everyone 
+		measure center $everyone
+	Calculate basis vector lengths and extract cell origin, round to two decimals. 
+
+	Change the cellBasiscVectors and cellOrigin for PBC in .conf file accordingly 
+	Fix PMEGridSize
+
+
+

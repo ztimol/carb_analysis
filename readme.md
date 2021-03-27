@@ -36,7 +36,7 @@ The entrypoint script is base.py. The path to the config file is a required flag
 
 ## 3) Multiprocessing
 
-The underlying MDAnalysis libraries do not employ multiprocessing - see the MDAnalysis docs. Additionaly, the way trajectories are handled by MDAnalysis does not make implementing multiprocessing on top of it trivial. There is a good reason for this - again google and the MDAnalysis docs provide more information.
+The underlying MDAnalysis libraries do not employ multiprocessing - see the MDAnalysis docs. The way trajectories are handled by MDAnalysis also do not make implementing multiprocessing on top of it trivial. There is a good reason for this - again google and the MDAnalysis docs provide more information.
 
 
 ## 4) Config file 
@@ -113,4 +113,4 @@ ring_pucker Glc "resid 3 and name O5 C1 C2 C3 C4 C5"
 
 ## 5) Known Bugs
 
-* Cannot run two or more simulataneous simulations with namd_energy calc enabled.
+* Cannot run two or simulataneous simulations with namd_energy calc enabled.
