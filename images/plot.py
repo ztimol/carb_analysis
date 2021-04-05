@@ -9,12 +9,13 @@ OUTPUT_PATH = "./"
 PLOT_NAME = "out"
 
 # INFILE_PATH = #"/home/timol/C6W/Studies/structure_analysis/output/bDGlc13_bDGlc14_bDGlcNAc_glycam/torsion_angles/bDGlc14bDGlcNAc/psi.dat"
-
 # INFILE_PATH = "/home/timol/C6W/Studies/structure_analysis/output/y_s_flexneri_6ru/atom_distances/index 6 508/index 6 508.dat"
-INFILE_PATH = "/home/timol/C6W/Studies/structure_analysis/output/7b_s_flexneri_6ru/atom_distances/index 6 790/index 6 790.dat"
 
-PLOT_COLOUR = "green"
-y_axis_label = r"$\it{r}$ ($\AA$)"
+INFILE_PATH = "/home/timol/C6W/Studies/structure_analysis/output/7a_s_flexneri_6ru/ring_pucker/ru4/trajectory_cp_phi_theta_Q.dat"
+
+PLOT_COLOUR = "blue"
+# y_axis_label = r"$\it{r}$ ($\AA$)"
+y_axis_label = r"$\theta$"
 x_axis_label = r"t (ns)"
 
 # FACE_COLOUR = "#D3D3D3"
@@ -26,8 +27,8 @@ TICK_FONT_SIZE = 20
 # Y_TICKS = (0, 30, 60, 90, 120, 150, 180)
 # Y_TICKS = (0, 60, 120, 180, 240, 300, 360)
 # Y_TICKS = (-180, -120, -60, 0, 60, 120, 180)
-Y_TICKS = (0, 10, 20, 30, 40, 50, 60, 70, 80, 90)
-X_TICKS = (0, 200, 400, 600, 800, 1000)
+Y_TICKS = (0, 10, 20, 30, 40, 50)
+# X_TICKS = (0, 200, 400, 600, 800, 1000)
 # X_TICKS = (0, 0.5, 1, 1.5, 2)
 
 AXIS_RANGE = (0, 1000, 0, 90)
@@ -77,7 +78,7 @@ plt.axis(AXIS_RANGE)
 a.set_xlabel(x_axis_label, fontsize=LABEL_FONT_SIZE)
 h = a.set_ylabel(y_axis_label, fontsize=LABEL_FONT_SIZE)
 # h.set_rotation(0)
-a.set_xticks(X_TICKS)
+# a.set_xticks(X_TICKS)
 a.set_yticks(Y_TICKS)
 a.set_facecolor(FACE_COLOUR)
 

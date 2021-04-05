@@ -18,63 +18,75 @@ class BlockAverage(Trajectory):
         self.env = env
         self.block_ave_dir = block_ave_dir
 
-    def _set_block_ave_dir(self, torsion_name):
-        block_name_dir = os.path.join(self.block_ave_dir, torsion_name)
-
-        if not os.path.exists(block_name_dir):
-            os.mkdir(block_name_dir)
-
-        return block_name_dir
-
     def block_average_analysis(self):
-        results = []
+        block_average_data = []  # initialise with origin
         for nblocks in range(1, 10):
             print(nblocks)
-            results.append(self.blocked(nblocks))
+            block_average_data.append(self.blocked(nblocks))
 
-        result = np.array(results)
-        self.write_block_averages(result)
-        self.plot(result)
+        block_calc_data = np.array(block_average_data)
+
+        data_out_file_path = os.path.join(self.block_ave_dir, "block_average.dat")
+
+        self._write_block_averages(block_calc_data, data_out_file_path)
+        self.plot(block_calc_data)
 
     def blocked(self, nblocks):
         size = int(self.mda_universe.trajectory.n_frames / nblocks)
         blocks = []
-
-        # self.mda_universe.trajectory[0]  # first frame
-        # first_frame_positions = self.mda_universe.select_atoms("all").positions
 
         for block in range(nblocks):
             a = []
             for frame in self.mda_universe.trajectory[
                 block * size : (block + 1) * size
             ]:
-                # positions = self.mda_universe.select_atoms("all").positions
-                # a.append(rms.rmsd(first_frame_positions, positions))
                 a.append(self.mda_universe.select_atoms("all").radius_of_gyration())
+
             blocks.append(np.average(a))
 
         blockaverage = np.average(blocks)
-        blockstd = np.std(blocks) / math.sqrt(len(blocks))
-        return nblocks, size, blockaverage, blockstd
+        blockstd = np.std(blocks)  # / math.sqrt(len(blocks))
+        block_length = size / self.get_frames_per_ns()
+        return block_length, size, blockaverage, blockstd
 
-    def write_block_averages(self, result):
-        pass
+    # def blocked(universe, nblocks, analyze):
+    #     size = universe.trajectory.numframes/nblocks
+    #     blocks = []
+    #     for block in xrange(nblocks):
+    #         a = []
+
+    #         for ts in u.trajectory[block*size:(block+1)*size]:
+    #             a.append(analyze(universe))
+    #         blocks.append(numpy.average(a))
+
+    #         blockaverage = numpy.average(blocks)
+    #         blockstd = numpy.std(blocks)
+    #     return nblocks, size, blockaverage, blockstd
+
+    def _write_block_averages(self, block_calc_data, data_out_file_path):
+        block_lengths, block_sizes, block_averages, block_std_errors = (
+            np.flip(block_calc_data[:, 0]),
+            block_calc_data[:, 1],
+            block_calc_data[:, 2],
+            block_calc_data[:, 3],
+        )
+
+        with open(data_out_file_path, "w") as out_file:
+            for block_length, block_size, block_average, block_std_error in zip(
+                block_lengths, block_sizes, block_averages, block_std_errors
+            ):
+                line = "{block_length} {block_size} {block_average} {block_std_error}\n".format(
+                    block_length=block_length,
+                    block_size=block_size,
+                    block_average=block_average,
+                    block_std_error=block_std_error,
+                )
+                out_file.write(line)
 
     def plot(self, result):
-        # subplot(211)
-
-        # errorbar(result[:, 0], result[:, 2], yerr=result[:, 3])
-        plot(result[:, 0], result[:, 3])
+        plot(np.flip(result[:, 0]), result[:, 3])
         xlabel("block length")
-        ylabel(r"$\langle R_{\rm{gyr}} \rangle$ ($\AA$)")
+        ylabel(r"Block Standard Error $\angle R_{\rm{gyr}} \rangle$ ($\AA$)")
         savefig("./block_average/figures/blocks.png")
 
         print("Wrote ./block_average/figures/blocks.{{pdf,png}}".format(*vars()))
-
-
-# def main():
-#     u = MDAnalysis.Universe(PSF, DCD)
-#     results = []
-#     for num_of_blocks in xrange(2, 10):
-#         results.append(blocked(u, num_of_blocks, rgyr))
-#     r = np.array(results)
