@@ -140,9 +140,9 @@ def solvate_minimised_structure(base_dir, structure_name):
 
 def main():
 
-    base_dir = "/home/timol/C6W/Studies/Dynamics/NAMD/Shigella/MD/Solution/7b_s_flexneri/7b_s_flexneri_3ru/simulations/"
+    base_dir = "/home/timol/C6W/Studies/Dynamics/NAMD/Shigella/MD/Solution/1a_s_flexneri/1a_s_flexneri_3ru/simulations/ring_restrained/"
 
-    structure_name = "7b_s_flexneri_3ru"
+    structure_name = "1a_s_flexneri_3ru"
 
     energy_minimisation(base_dir, structure_name)
     solvate_minimised_structure(base_dir, structure_name)

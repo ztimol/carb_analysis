@@ -3,13 +3,9 @@ import numpy as np
 from MDAnalysis.analysis import rms
 from trajectory import Trajectory
 import math
+import time
 
 # from torsion.torsion_angle_plot import TorsionAnglePlot
-
-import matplotlib
-
-matplotlib.use("agg")  # no interactive plotting, only save figures
-from pylab import errorbar, subplot, xlabel, ylabel, savefig, plot
 
 
 class BlockAverage(Trajectory):
@@ -20,9 +16,13 @@ class BlockAverage(Trajectory):
 
     def block_average_analysis(self):
         block_average_data = []  # initialise with origin
-        for nblocks in range(1, 10):
+        print("start")
+        for nblocks in range(1, 20):
             print(nblocks)
+            start = time.time()
             block_average_data.append(self.blocked(nblocks))
+            end = time.time()
+            print(end - start)
 
         block_calc_data = np.array(block_average_data)
 
@@ -66,7 +66,7 @@ class BlockAverage(Trajectory):
     def _write_block_averages(self, block_calc_data, data_out_file_path):
         block_lengths, block_sizes, block_averages, block_std_errors = (
             np.flip(block_calc_data[:, 0]),
-            block_calc_data[:, 1],
+            np.flip(block_calc_data[:, 1]),
             block_calc_data[:, 2],
             block_calc_data[:, 3],
         )
@@ -83,10 +83,10 @@ class BlockAverage(Trajectory):
                 )
                 out_file.write(line)
 
-    def plot(self, result):
-        plot(np.flip(result[:, 0]), result[:, 3])
-        xlabel("block length")
-        ylabel(r"Block Standard Error $\angle R_{\rm{gyr}} \rangle$ ($\AA$)")
-        savefig("./block_average/figures/blocks.png")
+    # def plot(self, result):
+    #     plot(np.flip(result[:, 0]), result[:, 3])
+    #     xlabel("block length")
+    #     ylabel(r"Block Standard Error $\angle R_{\rm{gyr}} \rangle$ ($\AA$)")
+    #     savefig("./block_average/figures/blocks.png")
 
-        print("Wrote ./block_average/figures/blocks.{{pdf,png}}".format(*vars()))
+    #     print("Wrote ./block_average/figures/blocks.{{pdf,png}}".format(*vars()))

@@ -11,19 +11,22 @@ PLOT_NAME = "out"
 
 # INFILE_PATH = #"/home/timol/C6W/Studies/structure_analysis/output/bDGlc13_bDGlc14_bDGlcNAc_glycam/torsion_angles/bDGlc14bDGlcNAc/psi.dat"
 
-# INFILE_PATH = "/home/timol/C6W/Studies/structure_analysis/output/y_s_flexneri_6ru/atom_distances/index 6 508/index 6 508.dat"
+INFILE_PATH = "/home/timol/C6W/Studies/structure_analysis/output/y_s_flexneri_6ru/atom_distances/index 33 488/index 33 488.dat"
 
-INFILE_PATH = "/home/timol/C6W/Studies/structure_analysis/output/7a_s_flexneri_6ru/ring_pucker/ru4/trajectory_cp_phi_theta_Q.dat"
+# INFILE_PATH = "/home/timol/C6W/Studies/structure_analysis/output/7a_s_flexneri_6ru/ring_pucker/ru4/trajectory_cp_phi_theta_Q.dat"
 
-PLOT_COLOUR = "gray"
-# y_axis_label = r"$\it{r}$ ($\AA$)"
+PLOT_COLOUR = "orange"
+x_axis_label = r"$\it{r}$ ($\AA$)"
 # x_axis_label = r"t (ns)"
 
-y_axis_label = r"$\it{P}$"
-x_axis_label = r"$\theta$"
+BIN_WIDTH = 1
 
-X_TICKS = (0, 30, 60, 90, 120, 150, 180)
-Y_TICKS = (0, 0.05, 0.1, 0.15, 0.2, 0.25)
+y_axis_label = r"$\it{P}$"
+# x_axis_label = r"$\theta$"
+
+# X_TICKS = (0, 30, 60, 90, 120, 150, 180)
+X_TICKS = (0, 10, 20, 30, 40, 50, 60, 70, 80)
+Y_TICKS = (0, 0.01, 0.02, 0.03, 0.04, 0.05)
 
 # FACE_COLOUR = "#D3D3D3"
 FACE_COLOUR = "#FFFFFF"
@@ -31,7 +34,7 @@ FACE_COLOUR = "#FFFFFF"
 LABEL_FONT_SIZE = 30
 TICK_FONT_SIZE = 20
 
-Y_VALUE_INDEX = 2
+Y_VALUE_INDEX = 1
 
 x_values = []
 y_values = []
@@ -51,7 +54,8 @@ a.hist(
     y_values,
     color=PLOT_COLOUR,
     edgecolor="black",
-    bins=36,
+    #    bins=NUM_BINS,
+    bins=range(int(min(y_values)), int(max(y_values)) + BIN_WIDTH, BIN_WIDTH),
     weights=np.ones(len(y_values)) / len(y_values),
 )
 
