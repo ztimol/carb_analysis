@@ -10,50 +10,41 @@ import statistics
 OUTPUT_PATH = "./"
 PLOT_NAME = "out"
 
+# INFILE_PATH = #"/home/timol/C6W/Studies/structure_analysis/output/bDGlc13_bDGlc14_bDGlcNAc_glycam/torsion_angles/bDGlc14bDGlcNAc/psi.dat"
+# INFILE_PATH = "/home/timol/C6W/Studies/structure_analysis/output/y_s_flexneri_6ru/atom_distances/index 6 508/index 6 508.dat"
 # INFILE_PATH = "/home/timol/C6W/Studies/structure_analysis/output/7a_s_flexneri_6ru/ring_pucker/ru5/trajectory_cp_phi_theta_Q.dat"
 
-# INFILE_PATH = "/home/timol/C6W/Studies/structure_analysis/output/bDGlc13_bDGlc14_bDGlcNAc_glycam/ring_pucker/GlcNAc/trajectory_cp_phi_theta_Q.dat"
-
-
 # INFILE_PATH = "/home/timol/C6W/Studies/structure_analysis/output/y_s_flexneri_6ru/atom_distances/index 33 488/index 33 488.dat"
-INFILE_PATH = "/home/timol/C6W/Studies/structure_analysis/output/7a_s_flexneri_6ru/atom_distances/index 75 740/index 75 740.dat"
-# INFILE_PATH = "/home/timol/C6W/Studies/structure_analysis/output/7a_s_flexneri_6ru_ring_restrained/torsion_angles/aLRha13bDGlcNAc_ru3/psi.dat"
+# INFILE_PATH = "/home/timol/C6W/Studies/structure_analysis/output/7a_s_flexneri_6ru/atom_distances/index 75 740/index 75 740.dat"
+INFILE_PATH = "./7b.dat"
 
 
-PLOT_COLOUR = "blue"
-y_axis_label = r"$\it{r}$ ($\AA$)"
-# y_axis_label = r"$\phi$"
-# y_axis_label = r"$\theta$"
-# y_axis_label = r"Q"
-x_axis_label = r"t ($\mu$s)"
+PLOT_COLOUR = "red"
+# y_axis_label = r"$\it{r}$ ($\AA$)"
+y_axis_label = r"$\psi$"
+x_axis_label = r"$\phi$"
+# x_axis_label = r"t (ns)"
 
 # FACE_COLOUR = "#D3D3D3"
 FACE_COLOUR = "#FFFFFF"
 
-# LABEL_FONT_SIZE = 30
-# TICK_FONT_SIZE = 20
-LABEL_FONT_SIZE = 50
-TICK_FONT_SIZE = 35
+LABEL_FONT_SIZE = 30
+TICK_FONT_SIZE = 20
 
 # Y_TICKS = (0, 30, 60, 90, 120, 150, 180)
 # Y_TICKS = (0, 60, 120, 180, 240, 300, 360)
-# Y_TICKS = (0, 0.2, 0.4, 0.6, 0.8, 1.0)
-# Y_TICKS = (-180, -120, -60, 0, 60, 120, 180)
-Y_TICKS = (0, 10, 20, 30, 40, 50, 60, 70, 80)
+Y_TICKS = (-180, -120, -60, 0, 60, 120, 180)
+X_TICKS = (-180, -120, -60, 0, 60, 120, 180)
+# Y_TICKS = (0, 10, 20, 30, 40, 50, 60, 70, 80)
 # X_TICKS = (0, 400, 800, 1200, 1600, 2000)
 # X_TICKS = (0, 100, 200, 300, 400)
-X_TICKS = (0, 0.5, 1, 1.5, 2)
-# X_TICKS = (0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4)
+# X_TICKS = (0, 0.5, 1, 1.5, 2)
 
 # Y_TICKS = (1.7, 1.9, 2.1, 2.3, 2.5, 2.7, 2.9, 3.1, 3.3, 3.5)
 
-# AXIS_RANGE = (0, 2, 0, 360)
-# AXIS_RANGE = (0, 2, 0, 180)
-AXIS_RANGE = (0, 80, 0, 2000)
 
-
+AXIS_RANGE = (-180, 180, -180, 180)
 Y_VALUE_INDEX = 1
-X_VALUE_INDEX = 0
 
 x_values = []
 y_values = []
@@ -77,9 +68,8 @@ def binned_stats(data, bins, data_range, bin_size):
 with open(INFILE_PATH) as fp:
     for line in fp:
         line = line.split()
-        x_values.append((float(line[X_VALUE_INDEX]) * 25000) / 1000000000)
+        x_values.append(float(line[0]))
         y_values.append(float(line[Y_VALUE_INDEX]))
-    # pd.read_csv(INFILE_PATH, sep=' ', names=['t', 'phi', 'theta', 'q'])
 
 # --------------
 # binned_stats(y_values, 36, (-180, 180), 10)
@@ -88,9 +78,7 @@ with open(INFILE_PATH) as fp:
 # binned_stats(y_values, 1, (140, 180), 40)
 
 # print(np.average(y_values[: math.ceil(len(y_values))]))
-fig = plt.figure(figsize=(12, 6.5))
-
-# fig = plt.figure()
+fig = plt.figure()
 a = fig.add_subplot(1, 1, 1)
 
 a.scatter(x_values, y_values, s=0.3, color=PLOT_COLOUR)  # , marker="+")
@@ -113,4 +101,4 @@ for tick in a.yaxis.get_major_ticks():
 
 a.xaxis.set_minor_locator(MultipleLocator(50))
 
-plt.savefig(OUTPUT_PATH + PLOT_NAME + ".svg", bbox_inches="tight")
+plt.savefig(OUTPUT_PATH + PLOT_NAME + ".png", dpi=300, bbox_inches="tight")

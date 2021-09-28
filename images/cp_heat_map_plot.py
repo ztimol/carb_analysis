@@ -1,10 +1,11 @@
 import matplotlib.pyplot as plt
 from matplotlib import cm
+from matplotlib.colors import ListedColormap, LinearSegmentedColormap
 import math
 import numpy as np
 
 
-INFILE_PATH_1 = "/home/timol/C6W/Studies/structure_analysis/output/7a_s_flexneri_6ru/ring_pucker/ru5/trajectory_cp_phi_theta_Q.dat"
+INFILE_PATH_1 = "/home/timol/C6W/Studies/structure_analysis/output/7a_s_flexneri_6ru/ring_pucker/bDGlcNAc_ring_pucker_ru2-ru5.dat"
 
 OUTPUT_PATH = "./"
 
@@ -102,17 +103,11 @@ def plot(phi_values, theta_values, bin_count_list):
     fig = plt.figure(figsize=(12, 6.5))
     a = fig.add_subplot(1, 1, 1)
 
-    colors1 = plt.cm.Blues(np.linspace(0.0, 1, 128))
-    # colors2 = plt.cm.jet(np.linspace(0, 1, 128))
-    colors2 = plt.cm.copper_r(np.linspace(0, 1, 128))
+    colors = [(1, 1, 1), (0, 0, 1), (1, 0.75, 0), (1, 0, 0), (0.75, 0, 0)]
 
-    # combine them and build a new colormap
-    colors = np.vstack((colors1, colors2))
-    cmap = cm.colors.LinearSegmentedColormap.from_list("my_colormap", colors)
+    newcmp = cm.colors.LinearSegmentedColormap.from_list("my_colormap", colors)
 
-    cmap = plt.get_cmap(CMAP)
-
-    a.scatter(phi_values, theta_values, c=bin_count_list, cmap=cmap, s=1)
+    cf = a.scatter(phi_values, theta_values, c=bin_count_list, cmap=newcmp, s=1)
 
     plt.axis(AXIS_RANGE)
 
@@ -122,7 +117,7 @@ def plot(phi_values, theta_values, bin_count_list):
     a.set_xticks(X_TICKS)
     a.set_yticks(Y_TICKS)
     a.set_facecolor(FACE_COLOUR)
-    # cbar = fig.colorbar(cf)
+    cbar = fig.colorbar(cf)
     # cbar.ax.get_yaxis().set_ticks([])
 
     for tick in a.xaxis.get_major_ticks():
@@ -161,6 +156,9 @@ def plot_polor_heatmap(x, y, z, phi_values, theta_values, bin_count_list):
         phi_list.append(math.radians(phi))
 
     cf = ax.scatter(phi_list, theta_values, c=bin_count_list, cmap=cmap, s=1)
+
+    cbar = fig.colorbar(cf)
+    cbar.ax.get_yaxis().set_ticks([])
 
     plt.savefig(OUTPUT_PATH + POLAR_PLOT_NAME, dpi=300, bbox_inches="tight")
     # plt.show()

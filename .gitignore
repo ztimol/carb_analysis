@@ -107,3 +107,5 @@ venv.bak/
 results/
 output/
 namd_energy/namd_energy_output_files/
+
+*.png

@@ -47,7 +47,7 @@ class CPRingPucker(CPRingPuckerPlot, Trajectory):
 
         for frame in frames_to_analyse:
 
-            if frame.frame % 10000 == 0:
+            if frame.frame % 1000 == 0:
                 print(f"Starting frame number {frame.frame}")
 
             ring_center_of_geo = self.mda_universe.select_atoms(
@@ -90,6 +90,65 @@ class CPRingPucker(CPRingPuckerPlot, Trajectory):
             }
 
         return trajectory_cp_pucker_values
+
+        # def _calc_cremer_pople_ring_values_per_frame(self, ring_pucker_atom_selection):
+        # frames_to_analyse = self.mda_universe.trajectory[self.get_start_frame() :]
+
+        # trajectory_cp_pucker_values = {}
+
+        # def map_calc_cremer_pople_ring_values(frame):
+        #     if frame.frame % 1000 == 0:
+        #         print(f"Starting frame number {frame.frame}")
+
+        #     ring_center_of_geo = self.mda_universe.select_atoms(
+        #         ring_pucker_atom_selection
+        #     ).center_of_geometry()
+
+        #     ring_atom_position_vectors = self._calc_ring_atom_position_vectors_from_geometric_center(
+        #         ring_center_of_geo, ring_pucker_atom_selection
+        #     )
+
+        #     x_projected_vectors = self._calc_ring_atom_position_vector_projections(
+        #         ring_atom_position_vectors
+        #     )
+
+        #     y_projected_vectors = self._calc_ring_atom_position_vector_projections(
+        #         ring_atom_position_vectors, projection_type="y"
+        #     )
+
+        #     ring_atom_z_values = self._calc_ring_atom_z_values(
+        #         ring_atom_position_vectors, x_projected_vectors, y_projected_vectors
+        #     )
+
+        #     cremer_pople_Q_value = self._calc_cremer_pople_Q_value(ring_atom_z_values)
+
+        #     cremer_pople_q2, cremer_pople_phi2 = self._calc_cremer_pople_q2_and_phi(
+        #         ring_atom_z_values
+        #     )
+
+        #     q3 = self._calc_cremer_pople_q3(ring_atom_z_values)
+
+        #     cremer_pople_theta = self._calc_cremer_pople_theta(cremer_pople_q2, q3)
+
+        #     cremer_pople_phi2_deg = (cremer_pople_phi2 * 180) / math.pi
+        #     cremer_pople_theta_deg = (cremer_pople_theta * 180) / math.pi
+
+        #     return cremer_pople_Q_value, cremer_pople_phi2_deg, cremer_pople_theta_deg
+
+        # cremer_pople_ring_values_mapped = map(
+        #     map_calc_cremer_pople_ring_values, frames_to_analyse
+        # )
+        # cremer_pople_ring_values_mapped_df = pd.DataFrame(
+        #     cremer_pople_ring_values_mapped
+        # )
+
+        # # trajectory_cp_pucker_values[frame.frame] = {
+        # #     "cremer_pople_Q_value": cremer_pople_Q_value,
+        # #     "cremer_pople_phi2_deg": cremer_pople_phi2_deg,
+        # #     "cremer_pople_theta_deg": cremer_pople_theta_deg,
+        # # }
+
+        # return trajectory_cp_pucker_values
 
     def _calc_ring_atom_position_vectors_from_geometric_center(
         self, ring_center_of_geo, ring_pucker_atom_selection

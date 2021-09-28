@@ -7,25 +7,25 @@ from matplotlib.ticker import MultipleLocator, AutoMinorLocator
 
 # INFILE_PATH = "/home/timol/C6W/Studies/structure_analysis/output/aDGlc13_bDGlc14_bDGlcNAc/torsion_angles/aDGlc13bDGlcNAc/phi.dat"
 
-# INFILE_PATHS = [
-#     "/home/timol/C6W/Studies/structure_analysis/output/aDGlc13_aDGlc14_bDGlc/ring_pucker/Glc/trajectory_cp_phi_theta_Q.dat",
-#     "/home/timol/C6W/Studies/structure_analysis/output/aDGlc13_aDGlc14_bDGlcNAc/ring_pucker/GlcNAc/trajectory_cp_phi_theta_Q.dat",
-#     "/home/timol/C6W/Studies/structure_analysis/output/bDGlc13_aDGlc14_bDGlcNAc/ring_pucker/GlcNAc/trajectory_cp_phi_theta_Q.dat",
-#     "/home/timol/C6W/Studies/structure_analysis/output/aDGlc13_bDGlc14_bDGlcNAc/ring_pucker/GlcNAc/trajectory_cp_phi_theta_Q.dat",
-#     "/home/timol/C6W/Studies/structure_analysis/output/bDGlc13_bDGlc14_bDGlcNAc/ring_pucker/GlcNAc/trajectory_cp_phi_theta_Q.dat",
-# ]
-
 INFILE_PATHS = [
-    "/home/timol/C6W/Studies/structure_analysis/output/aDGlc13_aDGlc14_bDGlc_glycam/ring_pucker/Glc/trajectory_cp_phi_theta_Q.dat",
-    "/home/timol/C6W/Studies/structure_analysis/output/aDGlc13_aDGlc14_bDGlcNAc_glycam/ring_pucker/GlcNAc/trajectory_cp_phi_theta_Q.dat",
-    "/home/timol/C6W/Studies/structure_analysis/output/bDGlc13_aDGlc14_bDGlcNAc_glycam/ring_pucker/GlcNAc/trajectory_cp_phi_theta_Q.dat",
-    "/home/timol/C6W/Studies/structure_analysis/output/aDGlc13_bDGlc14_bDGlcNAc_glycam/ring_pucker/GlcNAc/trajectory_cp_phi_theta_Q.dat",
-    "/home/timol/C6W/Studies/structure_analysis/output/bDGlc13_bDGlc14_bDGlcNAc_glycam/ring_pucker/GlcNAc/trajectory_cp_phi_theta_Q.dat",
+    "/home/timol/C6W/Studies/structure_analysis/output/aDGlc13_aDGlc14_bDGlc/ring_pucker/Glc/trajectory_cp_phi_theta_Q.dat",
+    "/home/timol/C6W/Studies/structure_analysis/output/aDGlc13_aDGlc14_bDGlcNAc/ring_pucker/GlcNAc/trajectory_cp_phi_theta_Q.dat",
+    "/home/timol/C6W/Studies/structure_analysis/output/bDGlc13_aDGlc14_bDGlcNAc/ring_pucker/GlcNAc/trajectory_cp_phi_theta_Q.dat",
+    "/home/timol/C6W/Studies/structure_analysis/output/aDGlc13_bDGlc14_bDGlcNAc/ring_pucker/GlcNAc/trajectory_cp_phi_theta_Q.dat",
+    "/home/timol/C6W/Studies/structure_analysis/output/bDGlc13_bDGlc14_bDGlcNAc/ring_pucker/GlcNAc/trajectory_cp_phi_theta_Q.dat",
 ]
+
+# INFILE_PATHS = [
+#     "/home/timol/C6W/Studies/structure_analysis/output/aDGlc13_aDGlc14_bDGlc_glycam/ring_pucker/Glc/trajectory_cp_phi_theta_Q.dat",
+#     "/home/timol/C6W/Studies/structure_analysis/output/aDGlc13_aDGlc14_bDGlcNAc_glycam/ring_pucker/GlcNAc/trajectory_cp_phi_theta_Q.dat",
+#     "/home/timol/C6W/Studies/structure_analysis/output/bDGlc13_aDGlc14_bDGlcNAc_glycam/ring_pucker/GlcNAc/trajectory_cp_phi_theta_Q.dat",
+#     "/home/timol/C6W/Studies/structure_analysis/output/aDGlc13_bDGlc14_bDGlcNAc_glycam/ring_pucker/GlcNAc/trajectory_cp_phi_theta_Q.dat",
+#     "/home/timol/C6W/Studies/structure_analysis/output/bDGlc13_bDGlc14_bDGlcNAc_glycam/ring_pucker/GlcNAc/trajectory_cp_phi_theta_Q.dat",
+# ]
 
 # OUTPUT_PATH = "/home/timol/C6W/Studies/Dynamics/NAMD/MD/solution/general_structures/aDGlc13_bDGlc14_bDGlcNAc/images/ring_pucker/"
 OUTPUT_PATH = "./"
-PLOT_NAME = "out_bar"
+PLOT_NAME = "out_bar_charmm"
 
 PLOT_COLOUR = "orange"
 y_axis_label = r"$\theta$"
@@ -43,8 +43,9 @@ X_TICKS = (0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4)
 
 # Y_VALUE_INDEX = 1
 
-FACE_COLOUR = "#D3D3D3"
+# FACE_COLOUR = "#D3D3D3"
 # FACE_COLOUR = "#FFE4E1"
+FACE_COLOUR = "#FFFFFF"
 
 CMAP = "inferno_r"
 

@@ -4,5 +4,5 @@ argparse
 statistics
 pandas
 mdanalysis
-#mdanalysis==1.0.0 #0.20.1
+#mdanalysis==1.0.0
 
