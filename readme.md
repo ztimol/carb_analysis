@@ -1,6 +1,4 @@
-THIS README IS INCOMPLETE. INFORMATION WILL BE ADDED AND CHANGED CONTINUOUSLY.
-
-# Molecular Dynamics Structure Analysis Module
+# Molecular Dynamics Carbohydrate Structure Analysis Module
 
 ## 1) Setup
 
