@@ -95,14 +95,14 @@ torsion aLRha13bDGlcNAc phi "51 50 27 15"
 torsion aLRha13bDGlcNAc psi "50 27 15 16"
 torsion aLRha13bDGlcNAc scatter phi psi
 
-torsion aDGlc14bDGlcNAc phi "29 28 14 12"
-torsion aDGlc14bDGlcNAc psi "28 14 12 13"
-torsion aDGlc14bDGlcNAc scatter phi psi
+torsion aDGlc14bDGlcNAc phi "29 28 14 12" # time series scatter of phi torsion
+torsion aDGlc14bDGlcNAc psi "28 14 12 13" # time series scatter of psi torsion
+torsion aDGlc14bDGlcNAc scatter phi psi # phi against psi scatter plot 
 
 namd_path  /home/[user]/.NAMD_2.13_Linux-x86_64-multicore/namd2
 namd_energy trisaccharide_PE potential_energy
 
-ring_pucker GlcNAc "resid 2 and name O5 C1 C2 C3 C4 C5"
+ring_pucker GlcNAc "resid 2 and name O5 C1 C2 C3 C4 C5" # Calcualte the Cremer-Pople ring pucker parameters of the GlcNAc ring. Provides several graphs and data sets for the trajectory. 
 ring_pucker Glc "resid 3 and name O5 C1 C2 C3 C4 C5"
 ```
 
