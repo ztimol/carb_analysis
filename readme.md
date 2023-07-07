@@ -83,13 +83,13 @@ Below is an example config file that does the following:
 start_frame 0
 frames_per_ns 40
 
-dcd_file /home/[user]/C6W/Studies/Dynamics/NAMD_glycam/MD/solution/general_structures/aLRha13_aDGlc14_bDGlcNAc/trajectories/aLRha13_aDGlc14_bDGlcNAc_glycam_0-1000ns.dcd
-psf_file /home/[user]/C6W/Studies/Dynamics/NAMD_glycam/MD/solution/general_structures/aLRha13_aDGlc14_bDGlcNAc/trajectories/1_noWAT.psf
+dcd_file /home/[user]/Studies/Dynamics/NAMD/MD/solution/general_structures/aLRha13_aDGlc14_bDGlcNAc/trajectories/aLRha13_aDGlc14_bDGlcNAc_glycam_0-1000ns.dcd
+psf_file /home/[user]/Studies/Dynamics/NAMD/MD/solution/general_structures/aLRha13_aDGlc14_bDGlcNAc/trajectories/1_noWAT.psf
 
 amber yes
 
-parm7_file /home/[user]/C6W/Studies/Dynamics/NAMD_glycam/MD/solution/general_structures/aLRha13_aDGlc14_bDGlcNAc/trajectories/1_noWAT.parm7
-rst7_file /home/[user]/C6W/Studies/Dynamics/NAMD_glycam/MD/solution/general_structures/aLRha13_aDGlc14_bDGlcNAc/trajectories/1_noWAT.rst7
+parm7_file /home/[user]/Studies/Dynamics/NAMD/MD/solution/general_structures/aLRha13_aDGlc14_bDGlcNAc/trajectories/1_noWAT.parm7
+rst7_file /home/[user]/Studies/Dynamics/NAMD/MD/solution/general_structures/aLRha13_aDGlc14_bDGlcNAc/trajectories/1_noWAT.rst7
 
 torsion aLRha13bDGlcNAc phi "51 50 27 15"
 torsion aLRha13bDGlcNAc psi "50 27 15 16"
@@ -99,7 +99,7 @@ torsion aDGlc14bDGlcNAc phi "29 28 14 12"
 torsion aDGlc14bDGlcNAc psi "28 14 12 13"
 torsion aDGlc14bDGlcNAc scatter phi psi
 
-namd_path  /home/timol/.NAMD_2.13_Linux-x86_64-multicore/namd2
+namd_path  /home/[user]/.NAMD_2.13_Linux-x86_64-multicore/namd2
 namd_energy trisaccharide_PE potential_energy
 
 ring_pucker GlcNAc "resid 2 and name O5 C1 C2 C3 C4 C5"
