@@ -21,9 +21,7 @@ pip3 install -r requirements.txt
 
 ### 1.2) Minimum Requirements
 
-* python3
-* virtualenv/conda (optional)
-* Python libraries as specified in requirements.txt
+* python3.5 or greater
 
 ## 2) Running the script
 
